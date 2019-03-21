@@ -17,6 +17,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+  margin-top: 1em;
+}
+
 button {
   background: transparent;
   border: none;
@@ -30,9 +34,9 @@ button {
   }
 }
 
-p {
-  margin-top: 1em;
-}
+// h1 {
+//   text-align: center;
+// }
 
 ul {
   list-style-position: outside;

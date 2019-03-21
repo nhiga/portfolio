@@ -7,6 +7,10 @@ import heroLayer1 from "./hero-layer-1.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
 import "./App.scss";
+import Section from "./Section";
+import { sections } from "./data/sections";
+import About from "./About";
+import Page from "./Page";
 
 interface AppState {
   currentHeader: number;
@@ -34,7 +38,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    TweenLite.to("#header", 1, { color: "#80bfff", opacity: 1 });
+    TweenLite.to("#header", 1, { color: "#ffad33", opacity: 1 });
     const timeoutId = setTimeout(() => {
       dispatch({ type: "NEXT_HEADER" });
     }, 5000);
@@ -82,7 +86,7 @@ function App() {
 
   const handleScrollClick = () => {
     TweenLite.to("#container", 1, {
-      scrollTo: { y: "#main" },
+      scrollTo: { y: ".page" },
       ease: Expo.easeIn
     });
   };
@@ -180,7 +184,17 @@ function App() {
               <i className="fas fa-chevron-circle-down" />
             </button>
           </div>
-          <Main />
+          <Page>
+            <>
+              <div className="app__title">
+                <span className="app__title--highlight">NEAL </span>
+                <span className="app__title--primary">HIGA</span>
+              </div>
+              <Section {...sections["About"]}>
+                <About />
+              </Section>
+            </>
+          </Page>
         </div>
       </div>
       <div ref={contactRef} className="overlay__contact">

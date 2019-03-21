@@ -1,11 +1,12 @@
 import React from "react";
 
-import Section from "./Section";
-import { sections } from "./data/sections";
-import "./Main.scss";
 import About from "./About";
 import Experience from "./Experience";
 import Extras from "./Extras";
+import "./Main.scss";
+import Section from "./Section";
+
+import { sections } from "./data/sections";
 
 function Main() {
   return (
