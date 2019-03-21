@@ -1,0 +1,199 @@
+@import "./variables.scss";
+
+html {
+  font-size: 0.6em;
+}
+
+// Tablets in portrait
+@media only screen and (min-width: 720px) and (min-height: 416px) and (orientation: portrait) {
+  html {
+    font-size: 0.8em;
+  }
+}
+
+// Phones and tablets in landscape
+@media only screen and (max-width: 1199px) and (min-height: 319px) and (orientation: landscape) {
+  html {
+    font-size: 0.5em;
+  }
+}
+
+// Desktop
+@media only screen and (min-width: 1200px) and (orientation: landscape) {
+  html {
+    font-size: 1em;
+  }
+}
+
+.container {
+  color: #ffffff;
+  position: relative;
+  height: $screen-height;
+  max-height: $screen-height;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  perspective: 1px;
+  perspective-origin: center bottom;
+  text-align: center;
+  width: 100%;
+}
+
+.layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+
+  &__header {
+    align-items: center;
+    color: $color-primary;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    overflow: hidden;
+    text-shadow: 0.1em 0.1em 0.5em #242424;
+    transform-origin: center bottom;
+    transform: translateZ(-1px) scale(2);
+    z-index: -1;
+
+    &-title {
+      font-family: "Kaushan Script", cursive;
+      font-size: $hero-header-font-size;
+      margin: 0;
+    }
+  }
+
+  &.layer__3 {
+    height: 100%;
+    transform-origin: center bottom;
+    transform: translateZ(-3px) scale(4);
+    z-index: -2;
+  }
+
+  &.layer__2 {
+    height: 100%;
+    transform-origin: center bottom;
+    transform: translateZ(-2px) scale(3);
+    z-index: -2;
+  }
+
+  &.layer__1 {
+    // The height of layer 1 depends on how many screens we have
+    height: calc(100% * #{$screens});
+    overflow-y: scroll;
+
+    // the hero image on layer 1 is only 1 screen height
+    & > .hero {
+      height: calc(100% / #{$screens});
+    }
+  }
+}
+
+.hero {
+  height: 100%;
+  width: 100%;
+
+  &__image {
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom;
+    width: 100%;
+  }
+}
+
+.overlay {
+  &__scroll {
+    align-items: center;
+    bottom: calc(#{$screen-height} * (#{$screens} - 1));
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    justify-content: flex-end;
+    left: 0;
+    margin-bottom: 0.5em;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    & .button__scroll {
+      background: transparent;
+      border: none;
+      color: $color-primary;
+      cursor: pointer;
+      height: auto;
+      opacity: 1;
+      text-shadow: 1px 1px 0.1em #808080;
+      width: 2.5em;
+    }
+  }
+
+  &__contact {
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #f2f2f2;
+    border-radius: 6em;
+    bottom: 1em;
+    box-shadow: 0.5em 0.5em 1.5em #d9d9d9;
+    color: #80bfff;
+    display: flex;
+    flex-direction: row;
+    height: 5em;
+    justify-content: center;
+    position: fixed;
+    right: 1em;
+    width: 5em;
+
+    &-button {
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      color: #80bfff;
+      height: 2em;
+      outline: none;
+      width: 2em;
+    }
+
+    &-icon {
+      transform: translateY(0.1em);
+    }
+
+    &-content {
+      color: #808080;
+      display: none;
+      flex-grow: 1;
+      opacity: 0;
+    }
+
+    &-close {
+      background: transparent;
+      border: none;
+      color: #80bfff;
+      display: none;
+      margin: 0 1em 0 0;
+      opacity: 0;
+      outline: none;
+    }
+  }
+
+  &--fade {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 95%,
+      #ffffff 100%
+    );
+    height: calc(100% / #{$screens});
+    position: absolute;
+    top: 0.1em;
+    width: 100%;
+  }
+}
+
+// Desktop
+@media only screen and (min-width: 1200px) and (orientation: landscape) {
+  .overlay {
+    &__scroll:hover > .button__scroll {
+      opacity: 1;
+    }
+  }
+}

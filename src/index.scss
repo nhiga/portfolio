@@ -1,0 +1,49 @@
+@import "./variables.scss";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1em;
+}
+
+body {
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 2.5em;
+  outline: none;
+
+  &.small {
+    font-size: 1.5em;
+  }
+}
+
+p {
+  margin-top: 1em;
+}
+
+ul {
+  list-style-position: outside;
+  margin: 1em 1em;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.linkedin {
+  color: $color-linkedin;
+}
