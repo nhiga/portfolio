@@ -4,17 +4,28 @@
   background-color: $color-background;
   color: $color-primary;
   // height: 100vh;
+  line-height: 1.5em;
   margin: 0 auto;
+  // padding: 0 2em;
   text-align: left;
   width: 100%;
 
   &__title {
-    margin: 0 0 2em 0;
+    margin: 0 0 1.5em 0;
+  }
+
+  &__sub-section {
+    margin: 2em 0 0;
+  }
+
+  &--highlight {
+    color: $color-highlight;
   }
 }
 
 @media only screen and (min-width: 1200px) {
   .section {
     max-width: 1200px;
+    // padding: 0;
   }
 }

@@ -13,6 +13,7 @@ function About() {
       </p>
       <p>Technical experience includes:</p>
       <ul>
+        <li>TypeScript</li>
         <li>
           Building a Node.js/Express web application from the ground up with
           server-side rendering using ES6
@@ -27,7 +28,7 @@ function About() {
         </li>
         <li>Building style sheets with the use of SASS</li>
         <li>Creating unit tests with Jest and Enzyme</li>
-        <li>Creating reusable library components </li>
+        <li>Creating and maintaining reusable library components </li>
       </ul>
     </>
   );

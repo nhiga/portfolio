@@ -3,9 +3,9 @@ export const sections = {
     title: "about"
   },
   Experience: {
-    title: "Experience"
+    title: "experience"
   },
   Extras: {
-    title: "Extras"
+    title: "extras"
   }
 };

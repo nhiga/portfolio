@@ -21,7 +21,7 @@ html {
 // Desktop
 @media only screen and (min-width: 1200px) and (orientation: landscape) {
   html {
-    font-size: 1em;
+    font-size: 0.9em;
   }
 }
 
@@ -29,7 +29,7 @@ html {
   font-size: 3em;
   font-weight: bold;
   letter-spacing: 0.25em;
-  margin: 0 auto 1em auto;
+  margin: 0 auto 2em auto;
   text-align: left;
   width: 100%;
 
@@ -129,10 +129,15 @@ html {
     justify-content: flex-end;
     left: 0;
     // margin-bottom: 0.5em;
+    opacity: 1;
     position: absolute;
     top: 79vh;
     width: 100%;
     z-index: 1;
+
+    &:hover > .button__scroll {
+      opacity: 1;
+    }
 
     & .button__scroll {
       background: transparent;
@@ -140,9 +145,15 @@ html {
       color: $color-highlight;
       cursor: pointer;
       height: auto;
-      opacity: 1;
+      opacity: 0;
       text-shadow: 1px 1px 0.1em $color-button-shadow;
-      width: 2.5em;
+      transition: opacity 0.5s ease-in-out;
+      width: auto;
+
+      &:hover {
+        opacity: 1;
+        color: $color-highlight-hover;
+      }
     }
   }
 
@@ -162,6 +173,11 @@ html {
     right: 1em;
     width: 5em;
 
+    &:hover > .overlay__contact-button,
+    &:hover .overlay__contact-close {
+      color: $color-highlight-hover;
+    }
+
     &-button {
       background: transparent;
       border: none;
@@ -177,16 +193,20 @@ html {
     }
 
     &-content {
-      color: #808080;
+      color: $color-light;
       display: none;
       flex-grow: 1;
       opacity: 0;
+
+      & > a {
+        color: $color-light;
+      }
     }
 
     &-close {
       background: transparent;
       border: none;
-      color: #80bfff;
+      color: $color-highlight;
       display: none;
       margin: 0 1em 0 0;
       opacity: 0;
@@ -197,12 +217,67 @@ html {
   &--fade {
     background: linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0) 95%,
-      #ffffff 100%
+      rgba(255, 255, 255, 0) 94%,
+      #ffffff 99%
     );
     height: 100vh;
     position: absolute;
     top: 0.1em;
+    width: 100%;
+  }
+
+  &__divider--fade {
+    background: linear-gradient(
+      to bottom,
+      #ffffff 1%,
+      rgba(255, 255, 255, 0) 6%,
+      rgba(255, 255, 255, 0) 94%,
+      #ffffff 99%
+    );
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.divider-1 {
+  // border: 1px dashed red;
+  height: 50vh;
+  overflow-y: scroll;
+  perspective: 1px;
+  perspective-origin: center top;
+  position: relative;
+  width: 100%;
+
+  &__layer-1 {
+    height: 100%;
+    position: absolute;
+    top: 200vh;
+    transform-origin: center top;
+    transform: translateZ(0.4px) scale(0.6);
+    // transform: translateZ(-1px) scale(2);
+    width: 100%;
+    // z-index: 2;
+  }
+
+  &__image {
+    height: 200%;
+    object-fit: cover;
+    object-position: top;
+    width: 100%;
+  }
+
+  &__layer-2 {
+    background: linear-gradient(
+      to bottom,
+      #ffffff 10%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 59%,
+      #ffffff 89%
+    );
+    // border: 5px dashed red;
+    height: 150%;
+    position: absolute;
+    top: 0;
     width: 100%;
   }
 }

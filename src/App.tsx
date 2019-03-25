@@ -1,16 +1,25 @@
 // @ts-ignore
-import { TweenLite, TimelineLite, Expo, Ease, Power4 } from "gsap";
+import {
+  TweenLite,
+  TimelineLite,
+  Expo,
+  Ease,
+  Power4,
+  SlowMo,
+  TimelineMax
+} from "gsap";
 import React, { useEffect, useReducer, useRef } from "react";
-import Main from "./Main";
-import { handleHoverEnter, handleHoverLeave } from "./utility";
+import About from "./About";
+import Experience from "./Experience";
+import Page from "./Page";
+import Section from "./Section";
+import { sections } from "./data/sections";
 import heroLayer1 from "./hero-layer-1.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
+// import hero2Layer1 from "./hero2-layer-1.jpg";
+import hero2 from "./hero2b.jpg";
 import "./App.scss";
-import Section from "./Section";
-import { sections } from "./data/sections";
-import About from "./About";
-import Page from "./Page";
 
 interface AppState {
   currentHeader: number;
@@ -59,17 +68,23 @@ function App() {
   }, [state.currentHeader]);
 
   useEffect(() => {
-    const tl = new TimelineLite();
-    tl.from("#btnScroll", 2.5, {
-      color: "#4da6ff",
-      ease: Power4.easeInOut,
+    const scrollBtnAnimation = new TimelineMax({ paused: true });
+    scrollBtnAnimation.set("#btnScroll", {
+      yPercent: -400
+    });
+    scrollBtnAnimation.to("#btnScroll", 0.5, {
+      opacity: 1
+    });
+    scrollBtnAnimation.to("#btnScroll", 0.75, {
+      ease: Expo.easeOut,
+      opacity: 1,
+      yPercent: 0
+    });
+    scrollBtnAnimation.to("#btnScroll", 0.5, {
       opacity: 0,
-      yPercent: -500,
       clearProps: "all"
     });
-    tl.to("#btnScroll", 1, {
-      opacity: 0
-    });
+    scrollBtnAnimation.play(0);
   }, []);
 
   const handleScrollEnter = () => {
@@ -84,10 +99,15 @@ function App() {
     });
   };
 
-  const handleScrollClick = () => {
-    TweenLite.to("#container", 1, {
-      scrollTo: { y: ".page" },
-      ease: Expo.easeIn
+  const handleScrollClick = (
+    targetElement: string,
+    scrollToElement: string,
+    easing: Ease,
+    duration: number
+  ) => {
+    TweenLite.to(targetElement, duration, {
+      scrollTo: { y: scrollToElement },
+      ease: easing
     });
   };
 
@@ -163,25 +183,25 @@ function App() {
             <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
           </div>
         </div>
+        <div className="divider-1__layer-1">
+          <img src={hero2} alt="Image layer 1" className="divider-1__image" />
+          <div className="divider-1__layer-2" />
+        </div>
         <div className="layer layer__1">
           <div className="hero">
             <img src={heroLayer1} alt="Image layer 1" className="hero__image" />
             <div className="overlay--fade" />
           </div>
-          <div
-            className="overlay__scroll"
-            onMouseEnter={handleScrollEnter}
-            onMouseLeave={handleScrollLeave}
-          >
+          <div className="overlay__scroll">
             <button
               id="btnScroll"
               type="button"
               className="button__scroll"
-              onMouseEnter={() => handleHoverEnter("btnScroll")}
-              onMouseLeave={() => handleHoverLeave("btnScroll")}
-              onClick={handleScrollClick}
+              onClick={() =>
+                handleScrollClick("#container", ".page", Expo.easeInOut, 2)
+              }
             >
-              <i className="fas fa-chevron-circle-down" />
+              <i className="fas fa-chevron-down" />
             </button>
           </div>
           <Page>
@@ -193,7 +213,33 @@ function App() {
               <Section {...sections["About"]}>
                 <About />
               </Section>
+              <div className="overlay__scroll">
+                <button
+                  id="btnScroll"
+                  type="button"
+                  className="button__scroll"
+                  onClick={() =>
+                    handleScrollClick(
+                      "#container",
+                      "#experience",
+                      SlowMo.ease.config(0.7, 0.4, false),
+                      2
+                    )
+                  }
+                >
+                  <i className="fas fa-chevron-down" />
+                </button>
+              </div>
             </>
+          </Page>
+          <div className="divider-1">
+            <div className="overlay__divider--fade" />
+          </div>
+          <div id="experience" />
+          <Page className="page__experience">
+            <Section {...sections["Experience"]}>
+              <Experience />
+            </Section>
           </Page>
         </div>
       </div>
@@ -201,8 +247,8 @@ function App() {
         <button
           id="btnContactOpen"
           className="overlay__contact-button"
-          onMouseEnter={() => handleHoverEnter("btnContactOpen")}
-          onMouseLeave={() => handleHoverLeave("btnContactOpen")}
+          // onMouseEnter={() => handleHoverEnter("btnContactOpen")}
+          // onMouseLeave={() => handleHoverLeave("btnContactOpen")}
           onClick={handleContactOpen}
         >
           <i className="overlay__contact-icon fas fa-comment-alt" />
@@ -223,8 +269,8 @@ function App() {
             className="linkedin"
             href="https://www.linkedin.com/in/neal-higa-senior-software-engineer/"
             target="_blank"
-            onMouseEnter={() => handleHoverEnter("linkLinkedIn")}
-            onMouseLeave={() => handleHoverLeave("linkLinkedIn")}
+            // onMouseEnter={() => handleHoverEnter("linkLinkedIn")}
+            // onMouseLeave={() => handleHoverLeave("linkLinkedIn")}
           >
             <i className="fab fa-linkedin" />
           </a>
@@ -234,8 +280,8 @@ function App() {
             id="btnContactClose"
             className="small"
             onClick={handleContactClose}
-            onMouseEnter={() => handleHoverEnter("btnContactClose")}
-            onMouseLeave={() => handleHoverLeave("btnContactClose")}
+            // onMouseEnter={() => handleHoverEnter("btnContactClose")}
+            // onMouseLeave={() => handleHoverLeave("btnContactClose")}
           >
             <i className="fas fa-times-circle" />
           </button>
