@@ -48,8 +48,8 @@ html {
   perspective: 1px;
   perspective-origin: center bottom;
   text-align: center;
-  // -webkit-overflow-scrolling: touch;
   width: 100vw;
+  -webkit-overflow-scrolling: touch;
 }
 
 .layer {
