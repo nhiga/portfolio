@@ -1,15 +1,61 @@
 import React from "react";
+import { Transition } from "react-transition-group";
+import { TweenMax, Back, Linear } from "gsap";
 
-function Extras() {
+interface ExtrasProps {
+  show: boolean;
+}
+
+const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
+
+function Extras({ show }: ExtrasProps) {
   return (
-    <>
-      <p>
-        Under construction.&nbsp;&nbsp;
-        <span className="section--primary-color">
-          <i className="fas fa-hard-hat" />
-        </span>
-      </p>
-    </>
+    <Transition
+      unmountOnExit
+      in={show}
+      timeout={1000}
+      onEnter={(node, isAppearing) => {
+        TweenMax.set(node, startState);
+      }}
+      addEndListener={(node, done) => {
+        const vars = {
+          autoAlpha: show ? 1 : 0,
+          delay: show ? 0.2 : 0,
+          display: show ? "block" : "none",
+          ease: show ? Back.easeOut.config(1.7) : Linear.easeOut,
+          scale: 1,
+          onComplete: done
+        };
+
+        TweenMax.to(node, 0.2, vars);
+      }}
+    >
+      <div>
+        <section className="page__section">
+          <h2>
+            <span className="page--highlight">Extras</span>
+          </h2>
+          <ul>
+            <li>Blog post: Performant Parallax with CSS (coming soon)</li>
+            <li>
+              Blog post: Deploying Your Application Using Netlify (coming soon)
+            </li>
+            <li>
+              Code Sandbox: Playing with React hooks and a carousel component
+              (coming soon)
+            </li>
+          </ul>
+        </section>
+        <section className="page__section">
+          <h2>
+            <span className="page--highlight">...and Credits</span>
+          </h2>
+          <ul>
+            <li>Original photo by Max Saeling on Unsplash</li>
+          </ul>
+        </section>
+      </div>
+    </Transition>
   );
 }
 

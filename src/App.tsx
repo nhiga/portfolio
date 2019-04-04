@@ -1,25 +1,31 @@
 // @ts-ignore
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
 import {
-  TweenLite,
-  TimelineLite,
-  Expo,
-  Ease,
-  Power4,
-  SlowMo,
-  TimelineMax
-} from "gsap";
-import React, { useEffect, useReducer, useRef } from "react";
+  faChevronDown,
+  faCommentAlt,
+  faTimesCircle
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { TweenLite, Expo, Ease, TimelineMax, Linear, TweenMax } from "gsap";
+import React, { useEffect, useReducer } from "react";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import About from "./About";
+import Contact from "./Contact";
 import Experience from "./Experience";
+import Extras from "./Extras";
+import Nav from "./Nav";
 import Page from "./Page";
-import Section from "./Section";
-import { sections } from "./data/sections";
+
+import cloud from "./cloud.png";
 import heroLayer1 from "./hero-layer-1.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
-// import hero2Layer1 from "./hero2-layer-1.jpg";
-import hero2 from "./hero2b.jpg";
+import logo from "./nh-logo.svg";
+
 import "./App.scss";
+
+library.add(fab, faChevronDown, faCommentAlt, faTimesCircle);
 
 interface AppState {
   currentHeader: number;
@@ -43,11 +49,18 @@ function reducer(state: AppState, action: Action) {
 }
 
 function App() {
-  const contactRef = useRef<HTMLDivElement>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
+  let cloudRef: HTMLImageElement | null = null;
+  let headerRef: HTMLDivElement | null = null;
+  let btnScrollRef: HTMLButtonElement | null = null;
 
   useEffect(() => {
-    TweenLite.to("#header", 1, { color: "#ffad33", opacity: 1 });
+    TweenLite.fromTo(
+      headerRef,
+      1,
+      { opacity: 0, scale: 0.8 },
+      { color: "#ffad33", opacity: 1, scale: 1 }
+    );
     const timeoutId = setTimeout(() => {
       dispatch({ type: "NEXT_HEADER" });
     }, 5000);
@@ -55,49 +68,58 @@ function App() {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [state.currentHeader]);
+  }, [headerRef, state.currentHeader]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      TweenLite.to("#header", 1, { color: "#ffffff", opacity: 0 });
+      if (headerRef) {
+        TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
+      }
     }, 3750);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [state.currentHeader]);
+  }, [headerRef, state.currentHeader]);
 
   useEffect(() => {
-    const scrollBtnAnimation = new TimelineMax({ paused: true });
-    scrollBtnAnimation.set("#btnScroll", {
-      yPercent: -400
-    });
-    scrollBtnAnimation.to("#btnScroll", 0.5, {
-      opacity: 1
-    });
-    scrollBtnAnimation.to("#btnScroll", 0.75, {
-      ease: Expo.easeOut,
-      opacity: 1,
-      yPercent: 0
-    });
-    scrollBtnAnimation.to("#btnScroll", 0.5, {
-      opacity: 0,
-      clearProps: "all"
-    });
-    scrollBtnAnimation.play(0);
+    if (cloudRef) {
+      const fullVw = window.innerWidth;
+      const imgWidth = cloudRef.clientWidth;
+      TweenMax.fromTo(
+        cloudRef as {},
+        120,
+        {
+          left: -imgWidth
+        },
+        {
+          ease: Linear.easeNone,
+          left: fullVw,
+          repeat: -1
+        }
+      );
+    }
+
+    if (btnScrollRef) {
+      const scrollBtnAnimation = new TimelineMax({ paused: true });
+      scrollBtnAnimation.set(btnScrollRef as {}, {
+        autoAlpha: 0,
+        yPercent: -400
+      });
+      scrollBtnAnimation.to(btnScrollRef as {}, 0.5, {
+        autoAlpha: 1
+      });
+      scrollBtnAnimation.to(btnScrollRef as {}, 0.75, {
+        ease: Expo.easeOut,
+        yPercent: 0
+      });
+      scrollBtnAnimation.to(btnScrollRef as {}, 5, {
+        autoAlpha: 0,
+        clearProps: "all"
+      });
+      scrollBtnAnimation.play(0);
+    }
   }, []);
-
-  const handleScrollEnter = () => {
-    TweenLite.to("#btnScroll", 1, {
-      opacity: 1
-    });
-  };
-
-  const handleScrollLeave = () => {
-    TweenLite.to("#btnScroll", 1, {
-      opacity: 0
-    });
-  };
 
   const handleScrollClick = (
     targetElement: string,
@@ -111,69 +133,28 @@ function App() {
     });
   };
 
-  const handleContactOpen = () => {
-    try {
-      if (contactRef && contactRef.current) {
-        const width = contactRef.current.clientWidth;
-        const tl = new TimelineLite();
-        tl.to(contactRef.current, 1, {
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          width: width * 5.5
-        });
-        tl.to([`.overlay__contact-content`, `.overlay__contact-close`], 0.1, {
-          display: "block"
-        });
-        tl.to([`.overlay__contact-content`, `.overlay__contact-close`], 1, {
-          opacity: 1
-        });
-      }
-    } catch (e) {
-      console.log(`[App] An error occurred opening the contact pane`, e);
-    }
-  };
-
-  const handleContactClose = () => {
-    try {
-      if (contactRef && contactRef.current) {
-        const tl = new TimelineLite();
-        tl.to([`.overlay__contact-content`, `.overlay__contact-close`], 1, {
-          opacity: 0
-        });
-        tl.to([`.overlay__contact-content`, `.overlay__contact-close`], 0.1, {
-          display: "none"
-        });
-        tl.to(contactRef.current, 1, {
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "row",
-          width: "5em",
-          clearProps: "all"
-        });
-        tl.to(contactRef.current, 1, {
-          justifyContent: "center"
-        });
-      }
-    } catch (e) {
-      console.log(`[App] An error occurred closing the contact pane`, e);
-    }
-  };
-
   const headers = [
+    <h1 className="layer__header-title">quality</h1>,
     <h1 className="layer__header-title">passion</h1>,
-    <h1 className="layer__header-title">experience</h1>,
-    <h1 className="layer__header-title">results</h1>
+    <h1 className="layer__header-title">experience</h1>
   ];
 
   return (
     <>
       <div id="container" className="container">
         <div className="layer layer__header">
-          <div id="header">{headers[state.currentHeader]}</div>
+          <img src={logo} alt="logo" className="hero__logo" />
+          <div ref={div => (headerRef = div)}>
+            {headers[state.currentHeader]}
+          </div>
         </div>
         <div className="layer layer__3">
+          <img
+            ref={img => (cloudRef = img)}
+            src={cloud}
+            alt="cloud"
+            className="cloud-l"
+          />
           <div className="hero">
             <img src={heroLayer3} alt="Image layer 3" className="hero__image" />
           </div>
@@ -183,10 +164,6 @@ function App() {
             <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
           </div>
         </div>
-        <div className="divider-1__layer-1">
-          <img src={hero2} alt="Image layer 1" className="divider-1__image" />
-          <div className="divider-1__layer-2" />
-        </div>
         <div className="layer layer__1">
           <div className="hero">
             <img src={heroLayer1} alt="Image layer 1" className="hero__image" />
@@ -194,99 +171,56 @@ function App() {
           </div>
           <div className="overlay__scroll">
             <button
-              id="btnScroll"
+              ref={btn => (btnScrollRef = btn)}
               type="button"
               className="button__scroll"
               onClick={() =>
                 handleScrollClick("#container", ".page", Expo.easeInOut, 2)
               }
             >
-              <i className="fas fa-chevron-down" />
+              <FontAwesomeIcon icon="chevron-down" className="button__scroll-icon" />
             </button>
           </div>
-          <Page>
-            <>
-              <div className="app__title">
-                <span className="app__title--highlight">NEAL </span>
-                <span className="app__title--primary">HIGA</span>
-              </div>
-              <Section {...sections["About"]}>
-                <About />
-              </Section>
-              <div className="overlay__scroll">
-                <button
-                  id="btnScroll"
-                  type="button"
-                  className="button__scroll"
-                  onClick={() =>
-                    handleScrollClick(
-                      "#container",
-                      "#experience",
-                      SlowMo.ease.config(0.7, 0.4, false),
-                      2
-                    )
-                  }
-                >
-                  <i className="fas fa-chevron-down" />
-                </button>
-              </div>
-            </>
-          </Page>
-          <div className="divider-1">
-            <div className="overlay__divider--fade" />
-          </div>
-          <div id="experience" />
-          <Page className="page__experience">
-            <Section {...sections["Experience"]}>
-              <Experience />
-            </Section>
-          </Page>
+          <BrowserRouter>
+            <Page>
+              <>
+                <div className="app__title">
+                  <span className="app__title--highlight">NEAL</span>
+                  <img src={logo} alt="logo" className="app__title-logo" />
+                  <span className="app__title--primary">HIGA</span>
+                </div>
+                <Nav />
+                <Route path="/about" exact>
+                  {({ match }) => {
+                    return <About show={match !== null} />;
+                  }}
+                </Route>
+                <Route path="/experience" exact>
+                  {({ match }) => {
+                    return <Experience show={match !== null} />;
+                  }}
+                </Route>
+                <Route path="/extras" exact>
+                  {({ match }) => <Extras show={match !== null} />}
+                </Route>
+                <Route path="/:slug">
+                  {({ match }) => {
+                    const paths = ["about", "experience", "extras"];
+                    if (
+                      (match && !paths.includes(match.params.slug)) ||
+                      !match
+                    ) {
+                      return <Redirect to="/about" />;
+                    }
+                    return null;
+                  }}
+                </Route>
+              </>
+            </Page>
+          </BrowserRouter>
         </div>
       </div>
-      <div ref={contactRef} className="overlay__contact">
-        <button
-          id="btnContactOpen"
-          className="overlay__contact-button"
-          // onMouseEnter={() => handleHoverEnter("btnContactOpen")}
-          // onMouseLeave={() => handleHoverLeave("btnContactOpen")}
-          onClick={handleContactOpen}
-        >
-          <i className="overlay__contact-icon fas fa-comment-alt" />
-        </button>
-        <div className="overlay__contact-content">
-          If you'd like to get in touch, please
-          <br />
-          connect with me on&nbsp;
-          <a
-            href="https://www.linkedin.com/in/neal-higa-senior-software-engineer/"
-            target="_blank"
-          >
-            LinkedIn!
-          </a>
-          &nbsp;&nbsp;
-          <a
-            id="linkLinkedIn"
-            className="linkedin"
-            href="https://www.linkedin.com/in/neal-higa-senior-software-engineer/"
-            target="_blank"
-            // onMouseEnter={() => handleHoverEnter("linkLinkedIn")}
-            // onMouseLeave={() => handleHoverLeave("linkLinkedIn")}
-          >
-            <i className="fab fa-linkedin" />
-          </a>
-        </div>
-        <div className="overlay__contact-close">
-          <button
-            id="btnContactClose"
-            className="small"
-            onClick={handleContactClose}
-            // onMouseEnter={() => handleHoverEnter("btnContactClose")}
-            // onMouseLeave={() => handleHoverLeave("btnContactClose")}
-          >
-            <i className="fas fa-times-circle" />
-          </button>
-        </div>
-      </div>
+      <Contact />
     </>
   );
 }

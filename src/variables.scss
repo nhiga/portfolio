@@ -1,13 +1,15 @@
 $screens: 2;
 $screen-height: 100vh;
 
-$hero-header-font-size: 7em;
+$hero-header-font-size: 4em;
 
 $color-background: #ffffff;
+$color-background-opaque: rgba(0, 0, 0, 0.5);
 $color-button-background: #808080;
-$color-button-shadow: #999999;
+$color-button-shadow: rgba(38, 38, 38, 0.7);
 $color-highlight: #ffad33;
 $color-highlight-hover: #ffcc80;
 $color-light: #ffffff;
 $color-linkedin: #0077b5;
 $color-primary: #808080;
+$color-secondary: #bfbfbf;

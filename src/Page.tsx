@@ -9,7 +9,9 @@ interface PageProps {
 
 function Page({ className, children }: PageProps) {
   return (
-    <div className={`page${className ? ` ${className}` : ""}`}>{children}</div>
+    <div className="page">
+      <div className="page__content">{children}</div>
+    </div>
   );
 }
 

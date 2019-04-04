@@ -13,6 +13,7 @@ html {
 
 body {
   position: relative;
+  scroll-snap-type: y mandatory;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -26,21 +27,20 @@ button {
   border: none;
   color: inherit;
   cursor: pointer;
-  font-size: 2.5em;
   outline: none;
-
-  &.small {
-    font-size: 1.5em;
-  }
 }
-
-// h1 {
-//   text-align: center;
-// }
 
 ul {
   list-style-position: outside;
   margin: 1em 1.5em;
+}
+
+a {
+  text-decoration: none;
+
+  &:visited {
+    color: inherit;
+  }
 }
 
 code {
@@ -50,4 +50,9 @@ code {
 
 .linkedin {
   color: $color-linkedin;
+}
+
+.link--bold {
+  font-weight: bold;
+  text-decoration: underline;
 }

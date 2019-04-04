@@ -1,0 +1,34 @@
+@import "./variables.scss";
+
+.app__nav {
+  margin: 0 0 2.5em 0;
+
+  &-list {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    list-style: none;
+  }
+
+  &-item {
+    font-size: 1.25em;
+    font-weight: bold;
+
+    & > a {
+      border-bottom: 0px solid $color-background;
+      color: $color-primary;
+      transition: border-bottom 0.5s, color 0.5s;
+    }
+
+    & > a.active {
+      border-bottom: 3px solid $color-highlight;
+      color: $color-highlight;
+      transition: border-bottom 0.5s, color 0.5s;
+    }
+  }
+
+  &-link-icon {
+    margin: 0 1em 0 0;
+  }
+}

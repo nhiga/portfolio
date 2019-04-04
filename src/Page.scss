@@ -3,19 +3,64 @@
 .page {
   background-color: $color-background;
   color: $color-primary;
-  height: 100vh;
-  overflow: hidden;
-  padding: 10vh 2em;
+  height: 100%;
+  line-height: 1.5em;
+  min-height: 100vh;
   position: relative;
-  width: 100%;
+  scroll-snap-align: start;
+  text-align: left;
+  width: 100vw;
 
-  // &__experience {
-  //   height: 100vh;
-  // }
+  &__content {
+    height: 100%;
+    margin: 0 auto;
+    max-width: 90vw;
+    padding: 5vh 0 10vh 0;
+    position: relative;
+  }
+
+  &__icon {
+    font-size: 1.5em;
+  }
+
+  &__section-header {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    @media only screen and (orientation: landscape) {
+      flex-direction: row;
+    }
+
+    &-item {
+      // white-space: nowrap;
+
+      &:first-child {
+        margin-right: 0.5em;
+      }
+    }
+  }
+
+  &--highlight {
+    color: $color-highlight;
+  }
+
+  &--secondary {
+    color: $color-secondary;
+  }
+}
+
+.page__section + .page__section {
+  margin: 2em 0 0 0;
 }
 
 @media only screen and (min-width: 1200px) {
   .page {
-    padding: 10vh 0;
+    &__content {
+      max-width: 1200px;
+      padding: 5vh 0;
+    }
   }
 }

@@ -1,20 +1,50 @@
 import React from "react";
+import { Transition } from "react-transition-group";
+import { TweenMax, Back, Linear } from "gsap";
+interface ExperienceProps {
+  show: boolean;
+}
 
-function Experience() {
+const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
+
+function Experience({ show }: ExperienceProps) {
   return (
-    <>
-      <div className="section__sub-section">
-        <div className="experience__header">
-          <h2>
-            <span className="section--highlight">
-              Senior Software Engineer{" "}
+    <Transition
+      unmountOnExit
+      in={show}
+      timeout={1000}
+      onEnter={(node, isAppearing) => {
+        TweenMax.set(node, startState);
+      }}
+      addEndListener={(node, done) => {
+        const vars = {
+          autoAlpha: show ? 1 : 0,
+          delay: show ? 0.2 : 0,
+          display: show ? "block" : "none",
+          ease: show ? Back.easeOut.config(1.7) : Linear.easeOut,
+          scale: 1,
+          onComplete: done
+        };
+
+        TweenMax.to(node, 0.2, vars);
+      }}
+    >
+      <div>
+        <section className="page__section">
+          <div className="page__section-header">
+            <h2 className="page__section-header-item">
+              <span className="page--highlight">Senior Software Engineer</span>
+            </h2>
+            <h2 className="page__section-header-item">
+              <span>Esurance</span>
+            </h2>
+          </div>
+          <h4>
+            <span className="page--secondary">
+              September 2015 - October 2018
             </span>
-            <span>Esurance</span>
-          </h2>
-          <h4>September 2015 - October 2018</h4>
+          </h4>
           <h5>San Francisco</h5>
-        </div>
-        <div className="experience__items">
           <ul>
             <li>Full-stack JavaScript engineer</li>
             <li>
@@ -23,24 +53,28 @@ function Experience() {
               legacy applications
             </li>
             <li>
-              Developed client-facing e-commerce site and customer service agent
-              web applications
+              Developed client-facing e-commerce and customer service
+              representative web applications
             </li>
           </ul>
-        </div>
-      </div>
-      <div className="section__sub-section">
-        <div className="experience__header">
-          <h2>
-            <span className="section--highlight">
-              Software Developer & Consultant{" "}
+        </section>
+        <section className="page__section">
+          <div className="page__section-header">
+            <h2 className="page__section-header-item">
+              <span className="page--highlight">
+                Software Developer & Consultant
+              </span>
+            </h2>
+            <h2 className="page__section-header-item">
+              <span>Hewlett-Packard</span>
+            </h2>
+          </div>
+          <h4>
+            <span className="page--secondary">
+              August 2008 – September 2015
             </span>
-            <span>Hewlett-Packard</span>
-          </h2>
-          <h4>August 2008 – September 2015</h4>
+          </h4>
           <h5>San Francisco</h5>
-        </div>
-        <div className="experience__items">
           <ul>
             <li>Web and applications developer</li>
             <li>Microsoft Dynamics CRM developer</li>
@@ -50,25 +84,27 @@ function Experience() {
               Claims Management systems
             </li>
           </ul>
-        </div>
-      </div>
-      <div className="section__sub-section">
-        <div className="experience__header">
-          <h2>
-            <span className="section--highlight">Software Developer </span>
-            <span>Electronic Data Systems</span>
-          </h2>
-          <h4>April 2004 - July 2008</h4>
+        </section>
+        <section className="page__section">
+          <div className="page__section-header">
+            <h2 className="page__section-header-item">
+              <span className="page--highlight">Software Developer</span>
+            </h2>
+            <h2 className="page__section-header-item">
+              <span>Electronic Data Systems</span>
+            </h2>
+          </div>
+          <h4>
+            <span className="page--secondary">April 2004 - July 2008</span>
+          </h4>
           <h5>Los Angeles</h5>
-        </div>
-        <div className="experience__items">
           <ul>
             <li>Web and applications developer</li>
             <li>Developed various applications for the airline industry</li>
           </ul>
-        </div>
+        </section>
       </div>
-    </>
+    </Transition>
   );
 }
 
