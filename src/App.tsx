@@ -55,50 +55,62 @@ function App() {
   let headerRef: HTMLDivElement | null = null;
   let btnScrollRef: HTMLButtonElement | null = null;
 
-  useEffect(() => {
-    TweenLite.fromTo(
-      headerRef,
-      1,
-      { opacity: 0, scale: 0.8 },
-      { color: "#ffad33", opacity: 1, scale: 1 }
-    );
-    const timeoutId = setTimeout(() => {
-      dispatch({ type: "NEXT_HEADER" });
-    }, 5000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [headerRef, state.currentHeader]);
+  const isMobile = navigator
+    ? navigator.userAgent.match(
+        /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i
+      )
+    : false;
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (headerRef) {
-        TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
-      }
-    }, 3750);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [headerRef, state.currentHeader]);
-
-  useEffect(() => {
-    if (cloudRef) {
-      const fullVw = window.innerWidth;
-      const imgWidth = cloudRef.clientWidth;
-      TweenMax.fromTo(
-        cloudRef as {},
-        120,
-        {
-          left: -imgWidth
-        },
-        {
-          ease: Linear.easeNone,
-          left: fullVw,
-          repeat: -1
-        }
+    if (!isMobile) {
+      TweenLite.fromTo(
+        headerRef,
+        1,
+        { opacity: 0, scale: 0.8 },
+        { color: "#ffad33", opacity: 1, scale: 1 }
       );
+      const timeoutId = setTimeout(() => {
+        dispatch({ type: "NEXT_HEADER" });
+      }, 5000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [headerRef, state.currentHeader]);
+
+  useEffect(() => {
+    if (!isMobile) {
+      const timeoutId = setTimeout(() => {
+        if (headerRef) {
+          TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
+        }
+      }, 3750);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [headerRef, state.currentHeader]);
+
+  useEffect(() => {
+    if (!isMobile) {
+      if (cloudRef) {
+        const fullVw = window.innerWidth;
+        const imgWidth = cloudRef.clientWidth;
+        TweenMax.fromTo(
+          cloudRef as {},
+          120,
+          {
+            left: -imgWidth
+          },
+          {
+            ease: Linear.easeNone,
+            left: fullVw,
+            repeat: -1
+          }
+        );
+      }
     }
 
     if (btnScrollRef) {
@@ -134,11 +146,6 @@ function App() {
     });
   };
 
-  const isMobile = navigator
-    ? navigator.userAgent.match(
-        /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i
-      )
-    : false;
   const mobileIcon = isMobile ? (
     <FontAwesomeIcon icon="mobile" className="app__mobile" />
   ) : null;
