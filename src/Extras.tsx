@@ -9,6 +9,8 @@ interface ExtrasProps {
 const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
 
 function Extras({ show }: ExtrasProps) {
+  const info = navigator.userAgent;
+
   return (
     <Transition
       unmountOnExit
@@ -44,6 +46,7 @@ function Extras({ show }: ExtrasProps) {
               Code Sandbox: Playing with React hooks and a carousel component
               (coming soon)
             </li>
+            <li>{info}</li>
           </ul>
         </section>
         <section className="page__section">
