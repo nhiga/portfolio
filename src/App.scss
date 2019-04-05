@@ -49,16 +49,27 @@ html {
 .container {
   color: #ffffff;
   position: relative;
-  height: $screen-height;
-  max-height: $screen-height;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  perspective: 1px;
-  perspective-origin: center bottom;
+  height: auto;
+  // height: $screen-height;
+  // max-height: $screen-height;
+  // overflow-x: hidden;
+  // overflow-y: scroll;
+  // perspective: 1px;
+  // perspective-origin: center bottom;
   text-align: center;
-  transform-style: preserve-3d;
+  // transform-style: preserve-3d;
   width: 100vw;
   // -webkit-overflow-scrolling: touch;
+
+  &__desktop {
+    height: $screen-height;
+    max-height: $screen-height;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    perspective: 1px;
+    perspective-origin: center bottom;
+    transform-style: preserve-3d;
+  }
 }
 
 .layer {

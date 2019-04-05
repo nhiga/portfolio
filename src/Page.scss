@@ -3,16 +3,16 @@
 .page {
   background-color: $color-background;
   color: $color-primary;
-  height: 100%;
+  height: auto;
   line-height: 1.5em;
   min-height: 100vh;
   position: relative;
-  scroll-snap-align: start;
+  // scroll-snap-align: start;
   text-align: left;
   width: 100vw;
 
   &__content {
-    height: 100%;
+    height: auto;
     margin: 0 auto;
     max-width: 90vw;
     padding: 5vh 0 10vh 0;

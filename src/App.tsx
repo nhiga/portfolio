@@ -158,7 +158,10 @@ function App() {
 
   return (
     <>
-      <div id="container" className="container">
+      <div
+        id="container"
+        className={`container${!isMobile ? "__desktop" : ""}`}
+      >
         {!isMobile ? (
           <>
             <div className="layer layer__header">
