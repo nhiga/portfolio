@@ -134,17 +134,30 @@ function App() {
     }
   }, []);
 
-  const handleScrollClick = (
-    targetElement: string,
-    scrollToElement: string,
-    easing: Ease,
-    duration: number
-  ) => {
-    TweenLite.to(targetElement, duration, {
-      scrollTo: { y: scrollToElement },
-      ease: easing
+  const handleScrollClick = () => {
+    if (isMobile) {
+      TweenLite.to(window, 2, {
+        scrollTo: { y: ".page" },
+        ease: Expo.easeInOut
+      });
+    }
+    TweenLite.to("#container", 2, {
+      scrollTo: { y: ".page" },
+      ease: Expo.easeInOut
     });
   };
+
+  // const handleScrollClick = (
+  //   targetElement: string,
+  //   scrollToElement: string,
+  //   easing: Ease,
+  //   duration: number
+  // ) => {
+  //   TweenLite.to(targetElement, duration, {
+  //     scrollTo: { y: scrollToElement },
+  //     ease: easing
+  //   });
+  // };
 
   const mobileIcon = isMobile ? (
     <FontAwesomeIcon icon="mobile" className="app__mobile" />
@@ -229,9 +242,7 @@ function App() {
               ref={btn => (btnScrollRef = btn)}
               type="button"
               className="button__scroll"
-              onClick={() =>
-                handleScrollClick("#container", ".page", Expo.easeInOut, 2)
-              }
+              onClick={handleScrollClick}
             >
               <FontAwesomeIcon
                 icon="chevron-down"
