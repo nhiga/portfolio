@@ -11,6 +11,14 @@ html {
   }
 }
 
+.app__mobile {
+  color: red;
+  font-size: 2em;
+  left: 1em;
+  position: fixed;
+  top: 1em;
+}
+
 .app__title {
   align-items: center;
   display: flex;

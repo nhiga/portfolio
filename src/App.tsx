@@ -4,6 +4,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import {
   faChevronDown,
   faCommentAlt,
+  faMobile,
   faTimesCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +26,7 @@ import logo from "./nh-logo.svg";
 
 import "./App.scss";
 
-library.add(fab, faChevronDown, faCommentAlt, faTimesCircle);
+library.add(fab, faChevronDown, faCommentAlt, faMobile, faTimesCircle);
 
 interface AppState {
   currentHeader: number;
@@ -133,6 +134,16 @@ function App() {
     });
   };
 
+  const isMobile = navigator
+    ? navigator.userAgent.match(
+        /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i
+      )
+    : false;
+  let mobileIcon = null;
+  if (isMobile) {
+    mobileIcon = <FontAwesomeIcon icon="mobile" className="app__mobile" />;
+  }
+
   const headers = [
     <h1 className="layer__header-title">quality</h1>,
     <h1 className="layer__header-title">passion</h1>,
@@ -165,6 +176,7 @@ function App() {
           </div>
         </div>
         <div className="layer layer__1">
+          {mobileIcon}
           <div className="hero">
             <img src={heroLayer1} alt="Image layer 1" className="hero__image" />
             <div className="overlay--fade" />
@@ -178,7 +190,10 @@ function App() {
                 handleScrollClick("#container", ".page", Expo.easeInOut, 2)
               }
             >
-              <FontAwesomeIcon icon="chevron-down" className="button__scroll-icon" />
+              <FontAwesomeIcon
+                icon="chevron-down"
+                className="button__scroll-icon"
+              />
             </button>
           </div>
           <BrowserRouter>
