@@ -139,10 +139,9 @@ function App() {
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i
       )
     : false;
-  let mobileIcon = null;
-  if (isMobile) {
-    mobileIcon = <FontAwesomeIcon icon="mobile" className="app__mobile" />;
-  }
+  const mobileIcon = isMobile ? (
+    <FontAwesomeIcon icon="mobile" className="app__mobile" />
+  ) : null;
 
   const headers = [
     <h1 className="layer__header-title">quality</h1>,
@@ -153,7 +152,41 @@ function App() {
   return (
     <>
       <div id="container" className="container">
-        <div className="layer layer__header">
+        {!isMobile ? (
+          <>
+            <div className="layer layer__header">
+              <img src={logo} alt="logo" className="hero__logo" />
+              <div ref={div => (headerRef = div)}>
+                {headers[state.currentHeader]}
+              </div>
+            </div>
+            <div className="layer layer__3">
+              <img
+                ref={img => (cloudRef = img)}
+                src={cloud}
+                alt="cloud"
+                className="cloud-l"
+              />
+              <div className="hero">
+                <img
+                  src={heroLayer3}
+                  alt="Image layer 3"
+                  className="hero__image"
+                />
+              </div>
+            </div>
+            <div className="layer layer__2">
+              <div className="hero">
+                <img
+                  src={heroLayer2}
+                  alt="Image layer 2"
+                  className="hero__image"
+                />
+              </div>
+            </div>
+          </>
+        ) : null}
+        {/* <div className="layer layer__header">
           <img src={logo} alt="logo" className="hero__logo" />
           <div ref={div => (headerRef = div)}>
             {headers[state.currentHeader]}
@@ -174,7 +207,7 @@ function App() {
           <div className="hero">
             <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
           </div>
-        </div>
+        </div> */}
         <div className="layer layer__1">
           {mobileIcon}
           <div className="hero">
