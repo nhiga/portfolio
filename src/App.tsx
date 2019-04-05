@@ -19,7 +19,8 @@ import Nav from "./Nav";
 import Page from "./Page";
 
 import cloud from "./cloud.png";
-import heroLayer1 from "./hero-layer-1.png";
+import heroLayer1 from "./hero-layer-1.jpg";
+import heroLayer1Desktop from "./hero-layer-1-desktop.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
 import logo from "./nh-logo.svg";
@@ -62,35 +63,31 @@ function App() {
     : false;
 
   useEffect(() => {
-    if (!isMobile) {
-      TweenLite.fromTo(
-        headerRef,
-        1,
-        { opacity: 0, scale: 0.8 },
-        { color: "#ffad33", opacity: 1, scale: 1 }
-      );
-      const timeoutId = setTimeout(() => {
-        dispatch({ type: "NEXT_HEADER" });
-      }, 5000);
+    TweenLite.fromTo(
+      headerRef,
+      1,
+      { opacity: 0, scale: 0.8 },
+      { color: "#ffad33", opacity: 1, scale: 1 }
+    );
+    const timeoutId = setTimeout(() => {
+      dispatch({ type: "NEXT_HEADER" });
+    }, 5000);
 
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [headerRef, state.currentHeader]);
 
   useEffect(() => {
-    if (!isMobile) {
-      const timeoutId = setTimeout(() => {
-        if (headerRef) {
-          TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
-        }
-      }, 3750);
+    const timeoutId = setTimeout(() => {
+      if (headerRef) {
+        TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
+      }
+    }, 3750);
 
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [headerRef, state.currentHeader]);
 
   useEffect(() => {
@@ -171,18 +168,15 @@ function App() {
 
   return (
     <>
-      <div
-        id="container"
-        className={`container${!isMobile ? "__desktop" : ""}`}
-      >
+      <div id="container" className={`container${!isMobile ? " desktop" : ""}`}>
+        <div className={`layer layer__header${!isMobile ? " desktop" : ""}`}>
+          <img src={logo} alt="logo" className="hero__logo" />
+          <div ref={div => (headerRef = div)}>
+            {headers[state.currentHeader]}
+          </div>
+        </div>
         {!isMobile ? (
           <>
-            <div className="layer layer__header">
-              <img src={logo} alt="logo" className="hero__logo" />
-              <div ref={div => (headerRef = div)}>
-                {headers[state.currentHeader]}
-              </div>
-            </div>
             <div className="layer layer__3">
               <img
                 ref={img => (cloudRef = img)}
@@ -234,7 +228,11 @@ function App() {
         <div className="layer layer__1">
           {mobileIcon}
           <div className="hero">
-            <img src={heroLayer1} alt="Image layer 1" className="hero__image" />
+            <img
+              src={isMobile ? heroLayer1 : heroLayer1Desktop}
+              alt="Image layer 1"
+              className="hero__image"
+            />
             <div className="overlay--fade" />
           </div>
           <div className="overlay__scroll">

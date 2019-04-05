@@ -61,7 +61,7 @@ html {
   width: 100vw;
   // -webkit-overflow-scrolling: touch;
 
-  &__desktop {
+  &.desktop {
     height: $screen-height;
     max-height: $screen-height;
     overflow-x: hidden;
@@ -82,13 +82,10 @@ html {
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 75%;
+    height: 75vh;
     justify-content: center;
-    margin-top: -10em;
     overflow: hidden;
-    transform-origin: center bottom;
-    transform: translateZ(-1px) scale(2);
-    z-index: -1;
+    z-index: 1;
 
     &-title {
       color: $color-highlight;
@@ -102,6 +99,14 @@ html {
       @media only screen and (min-width: 1200px) and (orientation: landscape) {
         font-size: 6em;
       }
+    }
+
+    &.desktop {
+      height: 75%;
+      margin-top: -10em;
+      transform-origin: center bottom;
+      transform: translateZ(-1px) scale(2);
+      z-index: -1;
     }
   }
 
