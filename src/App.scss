@@ -49,6 +49,7 @@ html {
   perspective-origin: center bottom;
   text-align: center;
   width: 100vw;
+  -webkit-overflow-scrolling: touch;
 }
 
 .layer {
