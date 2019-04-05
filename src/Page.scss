@@ -2,6 +2,7 @@
 
 .page {
   background-color: $color-background;
+  border: 1px dashed red;
   color: $color-primary;
   height: 100%;
   line-height: 1.5em;
@@ -12,6 +13,7 @@
   width: 100vw;
 
   &__content {
+    border: 1px dashed green;
     height: 100%;
     margin: 0 auto;
     max-width: 90vw;
