@@ -48,6 +48,7 @@ html {
   perspective: 1px;
   perspective-origin: center bottom;
   text-align: center;
+  transform-style: preserve-3d;
   width: 100vw;
   -webkit-overflow-scrolling: touch;
 }
