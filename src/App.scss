@@ -1,16 +1,5 @@
 @import "./variables.scss";
 
-html {
-  font-size: 0.8em;
-}
-
-// Desktop
-@media only screen and (min-width: 1200px) and (orientation: landscape) {
-  html {
-    font-size: 0.9em;
-  }
-}
-
 .app__mobile {
   color: red;
   font-size: 2em;

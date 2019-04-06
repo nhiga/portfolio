@@ -140,7 +140,7 @@ function Contact({ modal = false }: ContactProps) {
           <button
             ref={div => (closeRef = div)}
             id="btnContactClose"
-            className="contact__button-close"
+            className="contact__button-close-desktop"
             onClick={handleContactClose}
           >
             <FontAwesomeIcon icon="times-circle" />
@@ -167,7 +167,7 @@ function Contact({ modal = false }: ContactProps) {
               {contactContent}
               <button
                 ref={div => (closeRefMobile = div)}
-                className="contact__button-close-mobile"
+                className="contact__button-close"
                 onClick={handleContactCloseMobile}
               >
                 close
