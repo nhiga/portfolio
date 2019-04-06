@@ -1,8 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TimelineLite, TweenLite } from "gsap";
 import React, { useReducer } from "react";
-import Media from "react-media";
+// import Media from "react-media";
 import "./Contact.scss";
+
+interface ContactProps {
+  modal: boolean;
+}
 
 interface ContactState {
   contactOpen: boolean;
@@ -27,7 +31,7 @@ function reducer(state: ContactState, action: Action) {
   }
 }
 
-function Contact() {
+function Contact({ modal = false }: ContactProps) {
   let contactRef: HTMLDivElement | null = null;
   let contentRef: HTMLDivElement | null = null;
   let closeRef: HTMLButtonElement | null = null;
@@ -121,63 +125,58 @@ function Contact() {
   );
 
   return (
-    <Media query="(min-width: 1199px)">
-      {matches =>
-        matches ? (
+    <>
+      {!modal ? (
+        <div
+          ref={div => (contactRef = div)}
+          className={`contact desktop${state.contactOpen ? " open" : ""}`}
+        >
+          <button className="contact__button-open" onClick={handleContactOpen}>
+            <FontAwesomeIcon icon="comment-alt" />
+          </button>
+          <div ref={div => (contentRef = div)} className="contact__content">
+            {contactContent}
+          </div>
+          <button
+            ref={div => (closeRef = div)}
+            id="btnContactClose"
+            className="contact__button-close"
+            onClick={handleContactClose}
+          >
+            <FontAwesomeIcon icon="times-circle" />
+          </button>
+        </div>
+      ) : (
+        <>
           <div
             ref={div => (contactRef = div)}
             className={`contact${state.contactOpen ? " open" : ""}`}
           >
             <button
               className="contact__button-open"
-              onClick={handleContactOpen}
+              onClick={handleContactOpenMobile}
             >
               <FontAwesomeIcon icon="comment-alt" />
             </button>
-            <div ref={div => (contentRef = div)} className="contact__content">
-              {contactContent}
-            </div>
-            <button
-              ref={div => (closeRef = div)}
-              id="btnContactClose"
-              className="contact__button-close"
-              onClick={handleContactClose}
-            >
-              <FontAwesomeIcon icon="times-circle" />
-            </button>
           </div>
-        ) : (
-          <>
-            <div
-              ref={div => (contactRef = div)}
-              className={`contact${state.contactOpen ? " open" : ""}`}
-            >
+          <div
+            ref={div => (modalOverlayRef = div)}
+            className="contact__overlay"
+          >
+            <div className="contact__modal">
+              {contactContent}
               <button
-                className="contact__button-open"
-                onClick={handleContactOpenMobile}
+                ref={div => (closeRefMobile = div)}
+                className="contact__button-close-mobile"
+                onClick={handleContactCloseMobile}
               >
-                <FontAwesomeIcon icon="comment-alt" />
+                close
               </button>
             </div>
-            <div
-              ref={div => (modalOverlayRef = div)}
-              className="contact__overlay"
-            >
-              <div className="contact__modal">
-                {contactContent}
-                <button
-                  ref={div => (closeRefMobile = div)}
-                  className="contact__button-close-mobile"
-                  onClick={handleContactCloseMobile}
-                >
-                  close
-                </button>
-              </div>
-            </div>
-          </>
-        )
-      }
-    </Media>
+          </div>
+        </>
+      )}
+    </>
   );
 }
 

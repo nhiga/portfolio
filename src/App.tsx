@@ -57,8 +57,8 @@ function App() {
   let headerRef: HTMLDivElement | null = null;
   let btnScrollRef: HTMLButtonElement | null = null;
 
-  const isMobile = navigator
-    ? navigator.userAgent.match(
+  const isMobile: boolean = navigator
+    ? !!navigator.userAgent.match(
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i
       )
     : false;
@@ -256,7 +256,7 @@ function App() {
           </BrowserRouter>
         </div>
       </div>
-      <Contact />
+      <Contact modal={isMobile} />
     </>
   );
 }
