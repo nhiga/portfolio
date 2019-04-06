@@ -19,10 +19,11 @@ import Nav from "./Nav";
 import Page from "./Page";
 
 import cloud from "./cloud.png";
-import heroLayer1 from "./hero-layer-1.jpg";
+import heroLayer1 from "./hero-layer-1.png";
 import heroLayer1Desktop from "./hero-layer-1-desktop.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
+import heroLayer3Desktop from "./hero-layer-3-desktop.jpg";
 import logo from "./nh-logo.svg";
 
 import "./App.scss";
@@ -91,43 +92,43 @@ function App() {
   }, [headerRef, state.currentHeader]);
 
   useEffect(() => {
-    if (!isMobile) {
-      if (cloudRef) {
-        const fullVw = window.innerWidth;
-        const imgWidth = cloudRef.clientWidth;
-        TweenMax.fromTo(
-          cloudRef as {},
-          120,
-          {
-            left: -imgWidth
-          },
-          {
-            ease: Linear.easeNone,
-            left: fullVw,
-            repeat: -1
-          }
-        );
-      }
+    if (cloudRef) {
+      const fullVw = window.innerWidth;
+      const imgWidth = cloudRef.clientWidth;
+      TweenMax.fromTo(
+        cloudRef as {},
+        120,
+        {
+          left: -imgWidth
+        },
+        {
+          ease: Linear.easeNone,
+          left: fullVw,
+          repeat: -1
+        }
+      );
     }
 
-    if (btnScrollRef) {
-      const scrollBtnAnimation = new TimelineMax({ paused: true });
-      scrollBtnAnimation.set(btnScrollRef as {}, {
-        autoAlpha: 0,
-        yPercent: -400
-      });
-      scrollBtnAnimation.to(btnScrollRef as {}, 0.5, {
-        autoAlpha: 1
-      });
-      scrollBtnAnimation.to(btnScrollRef as {}, 0.75, {
-        ease: Expo.easeOut,
-        yPercent: 0
-      });
-      scrollBtnAnimation.to(btnScrollRef as {}, 5, {
-        autoAlpha: 0,
-        clearProps: "all"
-      });
-      scrollBtnAnimation.play(0);
+    if (!isMobile) {
+      if (btnScrollRef) {
+        const scrollBtnAnimation = new TimelineMax({ paused: true });
+        scrollBtnAnimation.set(btnScrollRef as {}, {
+          autoAlpha: 0,
+          yPercent: -400
+        });
+        scrollBtnAnimation.to(btnScrollRef as {}, 0.5, {
+          autoAlpha: 1
+        });
+        scrollBtnAnimation.to(btnScrollRef as {}, 0.75, {
+          ease: Expo.easeOut,
+          yPercent: 0
+        });
+        scrollBtnAnimation.to(btnScrollRef as {}, 5, {
+          autoAlpha: 0,
+          clearProps: "all"
+        });
+        scrollBtnAnimation.play(0);
+      }
     }
   }, []);
 
@@ -143,18 +144,6 @@ function App() {
       ease: Expo.easeInOut
     });
   };
-
-  // const handleScrollClick = (
-  //   targetElement: string,
-  //   scrollToElement: string,
-  //   easing: Ease,
-  //   duration: number
-  // ) => {
-  //   TweenLite.to(targetElement, duration, {
-  //     scrollTo: { y: scrollToElement },
-  //     ease: easing
-  //   });
-  // };
 
   const mobileIcon = isMobile ? (
     <FontAwesomeIcon icon="mobile" className="app__mobile" />
@@ -175,23 +164,23 @@ function App() {
             {headers[state.currentHeader]}
           </div>
         </div>
+        <div className={`layer layer__3${!isMobile ? " desktop" : ""}`}>
+          <img
+            ref={img => (cloudRef = img)}
+            src={cloud}
+            alt="cloud"
+            className="cloud-l"
+          />
+          <div className="hero">
+            <img
+              src={isMobile ? heroLayer3 : heroLayer3Desktop}
+              alt="Image layer 3"
+              className="hero__image"
+            />
+          </div>
+        </div>
         {!isMobile ? (
           <>
-            <div className="layer layer__3">
-              <img
-                ref={img => (cloudRef = img)}
-                src={cloud}
-                alt="cloud"
-                className="cloud-l"
-              />
-              <div className="hero">
-                <img
-                  src={heroLayer3}
-                  alt="Image layer 3"
-                  className="hero__image"
-                />
-              </div>
-            </div>
             <div className="layer layer__2">
               <div className="hero">
                 <img
@@ -203,28 +192,6 @@ function App() {
             </div>
           </>
         ) : null}
-        {/* <div className="layer layer__header">
-          <img src={logo} alt="logo" className="hero__logo" />
-          <div ref={div => (headerRef = div)}>
-            {headers[state.currentHeader]}
-          </div>
-        </div>
-        <div className="layer layer__3">
-          <img
-            ref={img => (cloudRef = img)}
-            src={cloud}
-            alt="cloud"
-            className="cloud-l"
-          />
-          <div className="hero">
-            <img src={heroLayer3} alt="Image layer 3" className="hero__image" />
-          </div>
-        </div>
-        <div className="layer layer__2">
-          <div className="hero">
-            <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
-          </div>
-        </div> */}
         <div className="layer layer__1">
           {mobileIcon}
           <div className="hero">
@@ -235,19 +202,21 @@ function App() {
             />
             <div className="overlay--fade" />
           </div>
-          <div className="overlay__scroll">
-            <button
-              ref={btn => (btnScrollRef = btn)}
-              type="button"
-              className="button__scroll"
-              onClick={handleScrollClick}
-            >
-              <FontAwesomeIcon
-                icon="chevron-down"
-                className="button__scroll-icon"
-              />
-            </button>
-          </div>
+          {!isMobile ? (
+            <div className="overlay__scroll">
+              <button
+                ref={btn => (btnScrollRef = btn)}
+                type="button"
+                className="button__scroll"
+                onClick={handleScrollClick}
+              >
+                <FontAwesomeIcon
+                  icon="chevron-down"
+                  className="button__scroll-icon"
+                />
+              </button>
+            </div>
+          ) : null}
           <BrowserRouter>
             <Page>
               <>

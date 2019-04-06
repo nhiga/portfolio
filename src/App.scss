@@ -111,10 +111,14 @@ html {
   }
 
   &.layer__3 {
-    height: 100%;
-    transform-origin: center bottom;
-    transform: translateZ(-3px) scale(4);
+    height: 100vh;
     z-index: -2;
+
+    &.desktop {
+      height: 100%;
+      transform-origin: center bottom;
+      transform: translateZ(-3px) scale(4);
+    }
   }
 
   &.layer__2 {
