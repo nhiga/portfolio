@@ -38,7 +38,10 @@ ul {
 a {
   text-decoration: none;
 
-  &:visited {
+  &:link,
+  &:active,
+  &:visited,
+  &:hover {
     color: inherit;
   }
 }
