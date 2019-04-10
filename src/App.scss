@@ -100,12 +100,12 @@
 
   &.layer__3 {
     height: $header-height;
-    overflow-x: hidden;
     transform-origin: bottom right;
     z-index: -3;
 
     &.desktop {
       height: 100%;
+      overflow-x: hidden;
       transform: translateZ(-3px) scale(4);
     }
   }
@@ -141,8 +141,12 @@
   &__image {
     height: 100%;
     object-fit: cover;
-    object-position: bottom;
+    object-position: left bottom;
     width: 100%;
+  }
+
+  &.desktop {
+    object-position: bottom;
   }
 
   &__logo {

@@ -141,13 +141,16 @@ function App() {
             const dy = -1 * screenHeight;
             const layer3 = layer3Collection[0] as HTMLDivElement;
             layer3.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
+            // layer3.style.transform = `translateY(${dy}px)`;
           }
 
           const layer2Collection = document.getElementsByClassName("layer__2");
           if (layer2Collection && layer2Collection.length > 0) {
             const layer2 = layer2Collection[0] as HTMLDivElement;
-            const dy = -2 * screenHeight;
-            layer2.style.transform = `translateY(${dy}px) translateZ(-2px) scale(3)`;
+            // const dy = -2 * screenHeight;
+            const dy = -1 * screenHeight;
+            // layer2.style.transform = `translateY(${dy}px) translateZ(-2px) scale(3)`;
+            layer2.style.transform = `translateY(${dy}px)`;
           }
         }
       };
@@ -191,14 +194,19 @@ function App() {
           </div>
         </div>
         <div className="layer layer__3">
-          <img
-            ref={img => (cloudRef = img)}
-            src={cloud}
-            alt="cloud"
-            className="cloud-l"
-          />
+          <div className="cloud">
+            <img
+              ref={img => (cloudRef = img)}
+              src={cloud}
+              alt="cloud"
+              className="cloud-l"
+            />
+          </div>
           <div className="hero">
             <img src={heroLayer3} alt="Image layer 3" className="hero__image" />
+          </div>
+          <div className="hero layer__2">
+            <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
           </div>
         </div>
         {/* <div className="layer layer__2">
@@ -209,7 +217,11 @@ function App() {
         <div className="layer layer__1">
           <FontAwesomeIcon icon="mobile" className="app__mobile" />
           <div className="hero">
-            <img src={heroLayer1} alt="Image layer 1" className="hero__image" />
+            <img
+              src={heroLayer1Desktop}
+              alt="Image layer 1"
+              className="hero__image"
+            />
             <div className="overlay--fade" />
           </div>
           <BrowserRouter>
@@ -271,13 +283,17 @@ function App() {
           <img
             src={heroLayer3Desktop}
             alt="Image layer 3"
-            className="hero__image"
+            className="hero__image desktop"
           />
         </div>
       </div>
       <div className="layer desktop layer__2">
         <div className="hero">
-          <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
+          <img
+            src={heroLayer2}
+            alt="Image layer 2"
+            className="hero__image desktop"
+          />
         </div>
       </div>
       <div className="layer desktop layer__1">
@@ -285,7 +301,7 @@ function App() {
           <img
             src={heroLayer1Desktop}
             alt="Image layer 1"
-            className="hero__image"
+            className="hero__image desktop"
           />
           <div className="overlay--fade" />
         </div>
