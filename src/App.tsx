@@ -1,4 +1,3 @@
-// @ts-ignore
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -9,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TweenLite, Expo, Ease, TimelineMax, Linear, TweenMax } from "gsap";
+import debounce from "lodash/debounce";
 import React, { useEffect, useReducer } from "react";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import About from "./About";
@@ -129,6 +129,32 @@ function App() {
         });
         scrollBtnAnimation.play(0);
       }
+    } else {
+      const init = () => {
+        const contentCollection = document.getElementsByClassName("page");
+        if (contentCollection && contentCollection.length > 0) {
+          const content = contentCollection[0] as HTMLDivElement;
+          const screenHeight = content.clientHeight;
+
+          const layer3Collection = document.getElementsByClassName("layer__3");
+          if (layer3Collection && layer3Collection.length > 0) {
+            const dy = -1 * screenHeight;
+            const layer3 = layer3Collection[0] as HTMLDivElement;
+            layer3.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
+          }
+
+          const layer2Collection = document.getElementsByClassName("layer__2");
+          if (layer2Collection && layer2Collection.length > 0) {
+            const layer2 = layer2Collection[0] as HTMLDivElement;
+            const dy = -2 * screenHeight;
+            layer2.style.transform = `translateY(${dy}px) translateZ(-2px) scale(3)`;
+          }
+        }
+      };
+
+      init();
+
+      window.addEventListener("resize", debounce(init, 250));
     }
   }, []);
 
@@ -145,9 +171,9 @@ function App() {
     });
   };
 
-  const mobileIcon = isMobile ? (
-    <FontAwesomeIcon icon="mobile" className="app__mobile" />
-  ) : null;
+  const headerClass = isMobile
+    ? "layer__header-title"
+    : "layer-desktop__header-title";
 
   const headers = [
     <h1 className="layer__header-title">quality</h1>,
@@ -155,9 +181,169 @@ function App() {
     <h1 className="layer__header-title">experience</h1>
   ];
 
+  const mobileContainer = (
+    <>
+      <div className="container">
+        <div className="layer layer__header">
+          <img src={logo} alt="logo" className="hero__logo" />
+          <div ref={div => (headerRef = div)}>
+            {headers[state.currentHeader]}
+          </div>
+        </div>
+        <div className="layer layer__3">
+          <img
+            ref={img => (cloudRef = img)}
+            src={cloud}
+            alt="cloud"
+            className="cloud-l"
+          />
+          <div className="hero">
+            <img src={heroLayer3} alt="Image layer 3" className="hero__image" />
+          </div>
+        </div>
+        {/* <div className="layer layer__2">
+          <div className="hero">
+            <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
+          </div>
+        </div> */}
+        <div className="layer layer__1">
+          <FontAwesomeIcon icon="mobile" className="app__mobile" />
+          <div className="hero">
+            <img src={heroLayer1} alt="Image layer 1" className="hero__image" />
+            <div className="overlay--fade" />
+          </div>
+          <BrowserRouter>
+            <Page>
+              <>
+                <div className="app__title">
+                  <span className="app__title--highlight">NEAL</span>
+                  <img src={logo} alt="logo" className="app__title-logo" />
+                  <span className="app__title--primary">HIGA</span>
+                </div>
+                <Nav />
+                <Route path="/about" exact>
+                  {({ match }) => {
+                    return <About show={match !== null} />;
+                  }}
+                </Route>
+                <Route path="/experience" exact>
+                  {({ match }) => {
+                    return <Experience show={match !== null} />;
+                  }}
+                </Route>
+                <Route path="/extras" exact>
+                  {({ match }) => <Extras show={match !== null} />}
+                </Route>
+                <Route path="/:slug">
+                  {({ match }) => {
+                    const paths = ["about", "experience", "extras"];
+                    if (
+                      (match && !paths.includes(match.params.slug)) ||
+                      !match
+                    ) {
+                      return <Redirect to="/about" />;
+                    }
+                    return null;
+                  }}
+                </Route>
+              </>
+            </Page>
+          </BrowserRouter>
+        </div>
+      </div>
+    </>
+  );
+
+  const desktopContainer = (
+    <div id="container" className="container desktop">
+      <div className="layer desktop layer__header">
+        <img src={logo} alt="logo" className="hero__logo" />
+        <div ref={div => (headerRef = div)}>{headers[state.currentHeader]}</div>
+      </div>
+      <div className="layer desktop layer__3">
+        <img
+          ref={img => (cloudRef = img)}
+          src={cloud}
+          alt="cloud"
+          className="cloud-l"
+        />
+        <div className="hero">
+          <img
+            src={heroLayer3Desktop}
+            alt="Image layer 3"
+            className="hero__image"
+          />
+        </div>
+      </div>
+      <div className="layer desktop layer__2">
+        <div className="hero">
+          <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
+        </div>
+      </div>
+      <div className="layer desktop layer__1">
+        <div className="hero">
+          <img
+            src={heroLayer1Desktop}
+            alt="Image layer 1"
+            className="hero__image"
+          />
+          <div className="overlay--fade" />
+        </div>
+        <div className="overlay__scroll">
+          <button
+            ref={btn => (btnScrollRef = btn)}
+            type="button"
+            className="button__scroll"
+            onClick={handleScrollClick}
+          >
+            <FontAwesomeIcon
+              icon="chevron-down"
+              className="button__scroll-icon"
+            />
+          </button>
+        </div>
+        <BrowserRouter>
+          <Page>
+            <>
+              <div className="app__title">
+                <span className="app__title--highlight">NEAL</span>
+                <img src={logo} alt="logo" className="app__title-logo" />
+                <span className="app__title--primary">HIGA</span>
+              </div>
+              <Nav />
+              <Route path="/about" exact>
+                {({ match }) => {
+                  return <About show={match !== null} />;
+                }}
+              </Route>
+              <Route path="/experience" exact>
+                {({ match }) => {
+                  return <Experience show={match !== null} />;
+                }}
+              </Route>
+              <Route path="/extras" exact>
+                {({ match }) => <Extras show={match !== null} />}
+              </Route>
+              <Route path="/:slug">
+                {({ match }) => {
+                  const paths = ["about", "experience", "extras"];
+                  if ((match && !paths.includes(match.params.slug)) || !match) {
+                    return <Redirect to="/about" />;
+                  }
+                  return null;
+                }}
+              </Route>
+            </>
+          </Page>
+        </BrowserRouter>
+      </div>
+    </div>
+  );
+
   return (
     <>
-      <div id="container" className={`container${!isMobile ? " desktop" : ""}`}>
+      {isMobile ? mobileContainer : desktopContainer}
+      {/* <div id="container" className={`container${!isMobile ? " desktop" : ""}`}>
         <div className={`layer layer__header${!isMobile ? " desktop" : ""}`}>
           <img src={logo} alt="logo" className="hero__logo" />
           <div ref={div => (headerRef = div)}>
@@ -180,17 +366,15 @@ function App() {
           </div>
         </div>
         {!isMobile ? (
-          <>
-            <div className="layer layer__2">
-              <div className="hero">
-                <img
-                  src={heroLayer2}
-                  alt="Image layer 2"
-                  className="hero__image"
-                />
-              </div>
+          <div className="layer layer__2">
+            <div className="hero">
+              <img
+                src={heroLayer2}
+                alt="Image layer 2"
+                className="hero__image"
+              />
             </div>
-          </>
+          </div>
         ) : null}
         <div className="layer layer__1">
           {mobileIcon}
@@ -255,7 +439,7 @@ function App() {
             </Page>
           </BrowserRouter>
         </div>
-      </div>
+      </div> */}
       <Contact modal={isMobile} />
     </>
   );

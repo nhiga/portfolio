@@ -5,7 +5,7 @@
   font-size: 2em;
   left: 1em;
   position: fixed;
-  top: 1em;
+  top: calc(#{$header-height} + 1em);
 }
 
 .app__title {
@@ -37,35 +37,33 @@
 
 .container {
   color: #ffffff;
-  position: relative;
   height: auto;
-  // height: $screen-height;
-  // max-height: $screen-height;
-  overflow-x: hidden;
-  // overflow-y: scroll;
-  // perspective: 1px;
-  // perspective-origin: center bottom;
-  text-align: center;
-  // transform-style: preserve-3d;
-  width: 100vw;
-  // -webkit-overflow-scrolling: touch;
+  margin: calc(-1 * #{$header-height}) 0 0 0;
+  perspective: 1px;
+  perspective-origin: bottom right;
+  transform-style: preserve-3d;
 
   &.desktop {
     height: $screen-height;
+    margin: 0;
     max-height: $screen-height;
     overflow-x: hidden;
     overflow-y: scroll;
     perspective: 1px;
-    perspective-origin: center bottom;
     transform-style: preserve-3d;
   }
 }
 
 .layer {
-  position: absolute;
-  left: 0;
+  position: sticky;
   top: 0;
-  width: 100%;
+
+  &.desktop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
 
   &__header {
     align-items: center;
@@ -74,12 +72,21 @@
     height: 75vh;
     justify-content: center;
     overflow: hidden;
+    transform-origin: bottom right;
     z-index: 1;
+    display: none;
+
+    &.desktop {
+      height: 75%;
+      margin-top: -10em;
+      transform: translateZ(-1px) scale(2);
+      z-index: -1;
+    }
 
     &-title {
       color: $color-highlight;
       font-family: "Montserrat", sans-serif;
-      font-size: $hero-header-font-size;
+      font-size: 4em;
       font-weight: bold;
       font-style: italic;
       margin: 0;
@@ -89,37 +96,37 @@
         font-size: 6em;
       }
     }
-
-    &.desktop {
-      height: 75%;
-      margin-top: -10em;
-      transform-origin: center bottom;
-      transform: translateZ(-1px) scale(2);
-      z-index: -1;
-    }
   }
 
   &.layer__3 {
-    height: 100vh;
-    z-index: -2;
+    height: $header-height;
+    overflow-x: hidden;
+    transform-origin: bottom right;
+    z-index: -3;
 
     &.desktop {
       height: 100%;
-      transform-origin: center bottom;
       transform: translateZ(-3px) scale(4);
     }
   }
 
   &.layer__2 {
-    height: 100%;
-    transform-origin: center bottom;
-    transform: translateZ(-2px) scale(3);
+    height: $header-height;
+    transform-origin: bottom right;
     z-index: -2;
+
+    &.desktop {
+      height: 100%;
+      transform: translateZ(-2px) scale(3);
+    }
   }
 
   &.layer__1 {
     height: auto;
-    position: relative;
+
+    &.desktop {
+      position: relative;
+    }
 
     & > .hero {
       height: 100vh;
@@ -152,8 +159,13 @@
     min-width: 500px;
     opacity: 0.9;
     position: absolute;
-    top: 12%;
+    top: 25%;
     width: 100%;
+    // display: none;
+
+    &.desktop {
+      top: 12%;
+    }
   }
 }
 
@@ -183,7 +195,6 @@
       font-size: 2.5em;
       height: auto;
       opacity: 0;
-      // text-shadow: 3px 3px 2px $color-button-shadow;
       transition: opacity 0.5s ease-in-out;
       width: auto;
 
