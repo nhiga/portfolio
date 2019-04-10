@@ -100,6 +100,7 @@
 
   &.layer__3 {
     height: $header-height;
+    overflow-x: hidden;
     transform-origin: bottom right;
     z-index: -3;
 
