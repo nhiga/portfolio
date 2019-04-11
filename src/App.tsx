@@ -32,20 +32,29 @@ library.add(fab, faChevronDown, faCommentAlt, faMobile, faTimesCircle);
 
 interface AppState {
   currentHeader: number;
+  pageHeight: number;
 }
 
-type Action = {
-  type: "NEXT_HEADER";
-};
+type Action =
+  | {
+      type: "SET_NEXT_HEADER";
+    }
+  | {
+      type: "SET_PAGE_HEIGHT";
+      value: number;
+    };
 
 const initialState = {
-  currentHeader: 0
+  currentHeader: 0,
+  pageHeight: 0
 };
 
-function reducer(state: AppState, action: Action) {
+function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case "NEXT_HEADER":
+    case "SET_NEXT_HEADER":
       return { ...state, currentHeader: (state.currentHeader + 1) % 3 };
+    case "SET_PAGE_HEIGHT":
+      return { ...state, pageHeight: action.value };
     default:
       throw new Error(`Error occurred in App.reducer`);
   }
@@ -56,12 +65,21 @@ function App() {
   let cloudRef: HTMLImageElement | null = null;
   let headerRef: HTMLDivElement | null = null;
   let btnScrollRef: HTMLButtonElement | null = null;
+  let layer3Ref: HTMLDivElement | null = null;
+  let pageRef: HTMLDivElement | null = null;
 
   const isMobile: boolean = navigator
     ? !!navigator.userAgent.match(
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i
       )
     : false;
+
+  const init = () => {
+    if (pageRef && layer3Ref) {
+      const dy = -1 * pageRef.clientHeight;
+      layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
+    }
+  };
 
   useEffect(() => {
     TweenLite.fromTo(
@@ -71,7 +89,7 @@ function App() {
       { color: "#ffad33", opacity: 1, scale: 1 }
     );
     const timeoutId = setTimeout(() => {
-      dispatch({ type: "NEXT_HEADER" });
+      dispatch({ type: "SET_NEXT_HEADER" });
     }, 5000);
 
     return () => {
@@ -95,9 +113,10 @@ function App() {
     if (cloudRef) {
       const fullVw = window.innerWidth;
       const imgWidth = cloudRef.clientWidth;
+      const duration = isMobile ? 60 : 120;
       TweenMax.fromTo(
         cloudRef as {},
-        120,
+        duration,
         {
           left: -imgWidth
         },
@@ -130,34 +149,13 @@ function App() {
         scrollBtnAnimation.play(0);
       }
     } else {
-      const init = () => {
-        const contentCollection = document.getElementsByClassName("page");
-        if (contentCollection && contentCollection.length > 0) {
-          const content = contentCollection[0] as HTMLDivElement;
-          const screenHeight = content.clientHeight;
-
-          const layer3Collection = document.getElementsByClassName("layer__3");
-          if (layer3Collection && layer3Collection.length > 0) {
-            const dy = -1 * screenHeight;
-            const layer3 = layer3Collection[0] as HTMLDivElement;
-            layer3.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
-            // layer3.style.transform = `translateY(${dy}px)`;
-          }
-
-          const layer2Collection = document.getElementsByClassName("layer__2");
-          if (layer2Collection && layer2Collection.length > 0) {
-            const layer2 = layer2Collection[0] as HTMLDivElement;
-            // const dy = -2 * screenHeight;
-            const dy = -1 * screenHeight;
-            // layer2.style.transform = `translateY(${dy}px) translateZ(-2px) scale(3)`;
-            layer2.style.transform = `translateY(${dy}px)`;
-          }
-        }
-      };
-
       init();
+      const debouncedInit = debounce(init, 250);
+      window.addEventListener("resize", debouncedInit);
 
-      window.addEventListener("resize", debounce(init, 250));
+      return () => {
+        window.removeEventListener("resize", debouncedInit);
+      };
     }
   }, []);
 
@@ -184,6 +182,54 @@ function App() {
     <h1 className="layer__header-title">experience</h1>
   ];
 
+  const processRef = (element: HTMLDivElement) => {
+    pageRef = element;
+    if (pageRef && pageRef.clientHeight !== state.pageHeight) {
+      console.log(
+        `[App:processRef] dispatching SET_PAGE_HEIGHT, value: ${
+          pageRef.clientHeight
+        }`
+      );
+      dispatch({ type: "SET_PAGE_HEIGHT", value: pageRef.clientHeight });
+      init();
+    }
+  };
+
+  const pageContainer = (
+    <BrowserRouter>
+      <div ref={processRef} className="page__container">
+        <Page>
+          <>
+            <div className="app__title">
+              <span className="app__title--highlight">NEAL</span>
+              <img src={logo} alt="logo" className="app__title-logo" />
+              <span className="app__title--primary">HIGA</span>
+            </div>
+            <Nav />
+            <Route path="/about" exact>
+              {({ match }) => <About show={match !== null} />}
+            </Route>
+            <Route path="/experience" exact>
+              {({ match }) => <Experience show={match !== null} />}
+            </Route>
+            <Route path="/extras" exact>
+              {({ match }) => <Extras show={match !== null} />}
+            </Route>
+            <Route path="/:slug">
+              {({ match }) => {
+                const paths = ["about", "experience", "extras"];
+                if ((match && !paths.includes(match.params.slug)) || !match) {
+                  return <Redirect to="/about" />;
+                }
+                return null;
+              }}
+            </Route>
+          </>
+        </Page>
+      </div>
+    </BrowserRouter>
+  );
+
   const mobileContainer = (
     <>
       <div className="container">
@@ -193,7 +239,7 @@ function App() {
             {headers[state.currentHeader]}
           </div>
         </div>
-        <div className="layer layer__3">
+        <div ref={div => (layer3Ref = div)} className="layer layer__3">
           <div className="cloud">
             <img
               ref={img => (cloudRef = img)}
@@ -224,7 +270,8 @@ function App() {
             />
             <div className="overlay--fade" />
           </div>
-          <BrowserRouter>
+          {pageContainer}
+          {/* <BrowserRouter>
             <Page>
               <>
                 <div className="app__title">
@@ -235,16 +282,30 @@ function App() {
                 <Nav />
                 <Route path="/about" exact>
                   {({ match }) => {
+                    if (match) {
+                      // dispatch({ type: "SET_PAGE", value: match.path });
+                      console.log(`[App] about`, match);
+                    }
                     return <About show={match !== null} />;
                   }}
                 </Route>
                 <Route path="/experience" exact>
                   {({ match }) => {
+                    if (match) {
+                      // dispatch({ type: "SET_PAGE", value: match.path });
+                      console.log(`[App] about`, match);
+                    }
                     return <Experience show={match !== null} />;
                   }}
                 </Route>
                 <Route path="/extras" exact>
-                  {({ match }) => <Extras show={match !== null} />}
+                  {({ match }) => {
+                    if (match) {
+                      // dispatch({ type: "SET_PAGE", value: match.path });
+                      console.log(`[App] about`, match);
+                    }
+                    return <Extras show={match !== null} />;
+                  }}
                 </Route>
                 <Route path="/:slug">
                   {({ match }) => {
@@ -260,7 +321,7 @@ function App() {
                 </Route>
               </>
             </Page>
-          </BrowserRouter>
+          </BrowserRouter> */}
         </div>
       </div>
     </>
@@ -318,40 +379,7 @@ function App() {
             />
           </button>
         </div>
-        <BrowserRouter>
-          <Page>
-            <>
-              <div className="app__title">
-                <span className="app__title--highlight">NEAL</span>
-                <img src={logo} alt="logo" className="app__title-logo" />
-                <span className="app__title--primary">HIGA</span>
-              </div>
-              <Nav />
-              <Route path="/about" exact>
-                {({ match }) => {
-                  return <About show={match !== null} />;
-                }}
-              </Route>
-              <Route path="/experience" exact>
-                {({ match }) => {
-                  return <Experience show={match !== null} />;
-                }}
-              </Route>
-              <Route path="/extras" exact>
-                {({ match }) => <Extras show={match !== null} />}
-              </Route>
-              <Route path="/:slug">
-                {({ match }) => {
-                  const paths = ["about", "experience", "extras"];
-                  if ((match && !paths.includes(match.params.slug)) || !match) {
-                    return <Redirect to="/about" />;
-                  }
-                  return null;
-                }}
-              </Route>
-            </>
-          </Page>
-        </BrowserRouter>
+        {pageContainer}
       </div>
     </div>
   );
