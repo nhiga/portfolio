@@ -184,12 +184,7 @@ function App() {
 
   const processRef = (element: HTMLDivElement) => {
     pageRef = element;
-    if (pageRef && pageRef.clientHeight !== state.pageHeight) {
-      console.log(
-        `[App:processRef] dispatching SET_PAGE_HEIGHT, value: ${
-          pageRef.clientHeight
-        }`
-      );
+    if (isMobile && pageRef && pageRef.clientHeight !== state.pageHeight) {
       dispatch({ type: "SET_PAGE_HEIGHT", value: pageRef.clientHeight });
       init();
     }

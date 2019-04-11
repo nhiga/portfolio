@@ -77,6 +77,7 @@
     display: none;
 
     &.desktop {
+      display: flex;
       height: 75%;
       margin-top: -10em;
       transform: translateZ(-1px) scale(2);
