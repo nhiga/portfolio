@@ -19,7 +19,7 @@ import Nav from "./Nav";
 import Page from "./Page";
 
 import cloud from "./cloud.png";
-import heroLayer1 from "./hero-layer-1.png";
+// import heroLayer1 from "./hero-layer-1.png";
 import heroLayer1Desktop from "./hero-layer-1-desktop.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
@@ -75,6 +75,11 @@ function App() {
     : false;
 
   const init = () => {
+    console.log(
+      `[App:init] ${pageRef ? "pageRef" : "none"} ${
+        layer3Ref ? "layer3Ref" : "none"
+      }`
+    );
     if (pageRef && layer3Ref) {
       const dy = -1 * pageRef.clientHeight;
       layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
@@ -172,10 +177,6 @@ function App() {
     });
   };
 
-  const headerClass = isMobile
-    ? "layer__header-title"
-    : "layer-desktop__header-title";
-
   const headers = [
     <h1 className="layer__header-title">quality</h1>,
     <h1 className="layer__header-title">passion</h1>,
@@ -250,14 +251,9 @@ function App() {
             <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
           </div>
         </div>
-        {/* <div className="layer layer__2">
-          <div className="hero">
-            <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
-          </div>
-        </div> */}
         <div className="layer layer__1">
-          <FontAwesomeIcon icon="mobile" className="app__mobile" />
           <div className="hero">
+            <FontAwesomeIcon icon="mobile" className="app__mobile" />
             <img
               src={heroLayer1Desktop}
               alt="Image layer 1"
@@ -266,57 +262,6 @@ function App() {
             <div className="overlay--fade" />
           </div>
           {pageContainer}
-          {/* <BrowserRouter>
-            <Page>
-              <>
-                <div className="app__title">
-                  <span className="app__title--highlight">NEAL</span>
-                  <img src={logo} alt="logo" className="app__title-logo" />
-                  <span className="app__title--primary">HIGA</span>
-                </div>
-                <Nav />
-                <Route path="/about" exact>
-                  {({ match }) => {
-                    if (match) {
-                      // dispatch({ type: "SET_PAGE", value: match.path });
-                      console.log(`[App] about`, match);
-                    }
-                    return <About show={match !== null} />;
-                  }}
-                </Route>
-                <Route path="/experience" exact>
-                  {({ match }) => {
-                    if (match) {
-                      // dispatch({ type: "SET_PAGE", value: match.path });
-                      console.log(`[App] about`, match);
-                    }
-                    return <Experience show={match !== null} />;
-                  }}
-                </Route>
-                <Route path="/extras" exact>
-                  {({ match }) => {
-                    if (match) {
-                      // dispatch({ type: "SET_PAGE", value: match.path });
-                      console.log(`[App] about`, match);
-                    }
-                    return <Extras show={match !== null} />;
-                  }}
-                </Route>
-                <Route path="/:slug">
-                  {({ match }) => {
-                    const paths = ["about", "experience", "extras"];
-                    if (
-                      (match && !paths.includes(match.params.slug)) ||
-                      !match
-                    ) {
-                      return <Redirect to="/about" />;
-                    }
-                    return null;
-                  }}
-                </Route>
-              </>
-            </Page>
-          </BrowserRouter> */}
         </div>
       </div>
     </>
@@ -382,103 +327,6 @@ function App() {
   return (
     <>
       {isMobile ? mobileContainer : desktopContainer}
-      {/* <div id="container" className={`container${!isMobile ? " desktop" : ""}`}>
-        <div className={`layer layer__header${!isMobile ? " desktop" : ""}`}>
-          <img src={logo} alt="logo" className="hero__logo" />
-          <div ref={div => (headerRef = div)}>
-            {headers[state.currentHeader]}
-          </div>
-        </div>
-        <div className={`layer layer__3${!isMobile ? " desktop" : ""}`}>
-          <img
-            ref={img => (cloudRef = img)}
-            src={cloud}
-            alt="cloud"
-            className="cloud-l"
-          />
-          <div className="hero">
-            <img
-              src={isMobile ? heroLayer3 : heroLayer3Desktop}
-              alt="Image layer 3"
-              className="hero__image"
-            />
-          </div>
-        </div>
-        {!isMobile ? (
-          <div className="layer layer__2">
-            <div className="hero">
-              <img
-                src={heroLayer2}
-                alt="Image layer 2"
-                className="hero__image"
-              />
-            </div>
-          </div>
-        ) : null}
-        <div className="layer layer__1">
-          {mobileIcon}
-          <div className="hero">
-            <img
-              src={isMobile ? heroLayer1 : heroLayer1Desktop}
-              alt="Image layer 1"
-              className="hero__image"
-            />
-            <div className="overlay--fade" />
-          </div>
-          {!isMobile ? (
-            <div className="overlay__scroll">
-              <button
-                ref={btn => (btnScrollRef = btn)}
-                type="button"
-                className="button__scroll"
-                onClick={handleScrollClick}
-              >
-                <FontAwesomeIcon
-                  icon="chevron-down"
-                  className="button__scroll-icon"
-                />
-              </button>
-            </div>
-          ) : null}
-          <BrowserRouter>
-            <Page>
-              <>
-                <div className="app__title">
-                  <span className="app__title--highlight">NEAL</span>
-                  <img src={logo} alt="logo" className="app__title-logo" />
-                  <span className="app__title--primary">HIGA</span>
-                </div>
-                <Nav />
-                <Route path="/about" exact>
-                  {({ match }) => {
-                    return <About show={match !== null} />;
-                  }}
-                </Route>
-                <Route path="/experience" exact>
-                  {({ match }) => {
-                    return <Experience show={match !== null} />;
-                  }}
-                </Route>
-                <Route path="/extras" exact>
-                  {({ match }) => <Extras show={match !== null} />}
-                </Route>
-                <Route path="/:slug">
-                  {({ match }) => {
-                    const paths = ["about", "experience", "extras"];
-                    if (
-                      (match && !paths.includes(match.params.slug)) ||
-                      !match
-                    ) {
-                      return <Redirect to="/about" />;
-                    }
-                    return null;
-                  }}
-                </Route>
-              </>
-            </Page>
-          </BrowserRouter>
-        </div>
-      </div> */}
       <Contact modal={isMobile} />
     </>
   );
