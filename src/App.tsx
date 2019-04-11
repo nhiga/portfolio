@@ -16,7 +16,7 @@ import Contact from "./Contact";
 import Experience from "./Experience";
 import Extras from "./Extras";
 import Nav from "./Nav";
-import Page from "./Page";
+// import Page from "./Page";
 
 import cloud from "./cloud.png";
 // import heroLayer1 from "./hero-layer-1.png";
@@ -27,12 +27,13 @@ import heroLayer3Desktop from "./hero-layer-3-desktop.jpg";
 import logo from "./nh-logo.svg";
 
 import "./App.scss";
+import "./Page.scss";
 
 library.add(fab, faChevronDown, faCommentAlt, faMobile, faTimesCircle);
 
 interface AppState {
   currentHeader: number;
-  pageHeight: number;
+  offsetY: number;
 }
 
 type Action =
@@ -40,21 +41,21 @@ type Action =
       type: "SET_NEXT_HEADER";
     }
   | {
-      type: "SET_PAGE_HEIGHT";
+      type: "SET_OFFSET_Y";
       value: number;
     };
 
 const initialState = {
   currentHeader: 0,
-  pageHeight: 0
+  offsetY: 0
 };
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case "SET_NEXT_HEADER":
       return { ...state, currentHeader: (state.currentHeader + 1) % 3 };
-    case "SET_PAGE_HEIGHT":
-      return { ...state, pageHeight: action.value };
+    case "SET_OFFSET_Y":
+      return { ...state, offsetY: action.value };
     default:
       throw new Error(`Error occurred in App.reducer`);
   }
@@ -74,12 +75,20 @@ function App() {
       )
     : false;
 
-  const init = () => {
-    console.log(
-      `[App:init] ${pageRef ? "pageRef" : "none"} ${
-        layer3Ref ? "layer3Ref" : "none"
-      }`
-    );
+  // const adjustOffset = (height: number) => {
+  //   console.log(
+  //     `[App:adjustOffset]`,
+  //     height,
+  //     state.offsetY,
+  //     pageRef ? pageRef.clientHeight : null
+  //   );
+  //   if (pageRef) {
+  //     adjustOffset(pageRef.clientHeight);
+  //   }
+  // };
+
+  const adjustOffset = () => {
+    console.log(`[App:adjustOffset]`, pageRef, layer3Ref);
     if (pageRef && layer3Ref) {
       const dy = -1 * pageRef.clientHeight;
       layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
@@ -97,13 +106,7 @@ function App() {
       dispatch({ type: "SET_NEXT_HEADER" });
     }, 5000);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [headerRef, state.currentHeader]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
+    const timeoutId2 = setTimeout(() => {
       if (headerRef) {
         TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
       }
@@ -111,6 +114,7 @@ function App() {
 
     return () => {
       clearTimeout(timeoutId);
+      clearTimeout(timeoutId2);
     };
   }, [headerRef, state.currentHeader]);
 
@@ -153,15 +157,18 @@ function App() {
         });
         scrollBtnAnimation.play(0);
       }
-    } else {
-      init();
-      const debouncedInit = debounce(init, 250);
-      window.addEventListener("resize", debouncedInit);
-
-      return () => {
-        window.removeEventListener("resize", debouncedInit);
-      };
-    }
+    } // else {
+    // const dbAdjustOffset = debounce(() => {
+    //   if (pageRef) {
+    //     const { height } = pageRef.getBoundingClientRect();
+    //     adjustOffset(height);
+    //   }
+    // }, 250);
+    // window.addEventListener("resize", dbAdjustOffset);
+    // return () => {
+    //   window.removeEventListener("resize", dbAdjustOffset);
+    // };
+    // }
   }, []);
 
   const handleScrollClick = () => {
@@ -183,18 +190,18 @@ function App() {
     <h1 className="layer__header-title">experience</h1>
   ];
 
-  const processRef = (element: HTMLDivElement) => {
-    pageRef = element;
-    if (isMobile && pageRef && pageRef.clientHeight !== state.pageHeight) {
-      dispatch({ type: "SET_PAGE_HEIGHT", value: pageRef.clientHeight });
-      init();
+  const setRef = (element: HTMLDivElement) => {
+    if (element) {
+      pageRef = element;
+      adjustOffset();
     }
   };
 
   const pageContainer = (
-    <BrowserRouter>
-      <div ref={processRef} className="page__container">
-        <Page>
+    <div ref={setRef} className="page">
+      <div className="page__content">
+        <BrowserRouter>
+          {/* <Page> */}
           <>
             <div className="app__title">
               <span className="app__title--highlight">NEAL</span>
@@ -203,13 +210,28 @@ function App() {
             </div>
             <Nav />
             <Route path="/about" exact>
-              {({ match }) => <About show={match !== null} />}
+              {({ match }) => (
+                <About
+                  show={match !== null}
+                  adjustOffset={isMobile ? adjustOffset : undefined}
+                />
+              )}
             </Route>
             <Route path="/experience" exact>
-              {({ match }) => <Experience show={match !== null} />}
+              {({ match }) => (
+                <Experience
+                  show={match !== null}
+                  adjustOffset={isMobile ? adjustOffset : undefined}
+                />
+              )}
             </Route>
             <Route path="/extras" exact>
-              {({ match }) => <Extras show={match !== null} />}
+              {({ match }) => (
+                <Extras
+                  show={match !== null}
+                  adjustOffset={isMobile ? adjustOffset : undefined}
+                />
+              )}
             </Route>
             <Route path="/:slug">
               {({ match }) => {
@@ -221,9 +243,10 @@ function App() {
               }}
             </Route>
           </>
-        </Page>
+          {/* </Page> */}
+        </BrowserRouter>
       </div>
-    </BrowserRouter>
+    </div>
   );
 
   const mobileContainer = (

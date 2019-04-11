@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Transition } from "react-transition-group";
 import { TweenMax, Back, Linear } from "gsap";
+
 interface ExperienceProps {
   show: boolean;
+  adjustOffset?: (offsetY: number) => void;
 }
 
 const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
 
-function Experience({ show }: ExperienceProps) {
+function Experience({ show, adjustOffset }: ExperienceProps) {
+  let articleRef: HTMLElement | null = null;
+
+  const setRef = (element: HTMLElement) => {
+    articleRef = element;
+  };
+
   return (
     <Transition
       unmountOnExit
@@ -15,6 +23,11 @@ function Experience({ show }: ExperienceProps) {
       timeout={1000}
       onEnter={(node, isAppearing) => {
         TweenMax.set(node, startState);
+      }}
+      onEntered={node => {
+        if (show && adjustOffset && articleRef) {
+          adjustOffset(articleRef.clientHeight);
+        }
       }}
       addEndListener={(node, done) => {
         const vars = {
@@ -29,7 +42,7 @@ function Experience({ show }: ExperienceProps) {
         TweenMax.to(node, 0.2, vars);
       }}
     >
-      <div>
+      <article ref={setRef}>
         <section className="page__section">
           <div className="page__section-header">
             <h2 className="page__section-header-item">
@@ -103,7 +116,7 @@ function Experience({ show }: ExperienceProps) {
             <li>Developed various applications for the airline industry</li>
           </ul>
         </section>
-      </div>
+      </article>
     </Transition>
   );
 }

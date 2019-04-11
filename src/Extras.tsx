@@ -4,12 +4,18 @@ import { TweenMax, Back, Linear } from "gsap";
 
 interface ExtrasProps {
   show: boolean;
+  adjustOffset?: (offsetY: number) => void;
 }
 
 const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
 
-function Extras({ show }: ExtrasProps) {
+function Extras({ show, adjustOffset }: ExtrasProps) {
+  let articleRef: HTMLElement | null = null;
   const info = navigator.userAgent;
+
+  const setRef = (element: HTMLElement) => {
+    articleRef = element;
+  };
 
   return (
     <Transition
@@ -18,6 +24,11 @@ function Extras({ show }: ExtrasProps) {
       timeout={1000}
       onEnter={(node, isAppearing) => {
         TweenMax.set(node, startState);
+      }}
+      onEntered={node => {
+        if (show && adjustOffset && articleRef) {
+          adjustOffset(articleRef.clientHeight);
+        }
       }}
       addEndListener={(node, done) => {
         const vars = {
@@ -32,7 +43,7 @@ function Extras({ show }: ExtrasProps) {
         TweenMax.to(node, 0.2, vars);
       }}
     >
-      <div>
+      <article ref={setRef}>
         <section className="page__section">
           <h2>
             <span className="page--highlight">Extras</span>
@@ -57,7 +68,7 @@ function Extras({ show }: ExtrasProps) {
             <li>Original photo by Max Saeling on Unsplash</li>
           </ul>
         </section>
-      </div>
+      </article>
     </Transition>
   );
 }
