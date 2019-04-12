@@ -110,6 +110,28 @@
       overflow-x: hidden;
       transform: translateZ(-3px) scale(4);
     }
+
+    & > .header__mobile {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      height: 50%;
+      justify-content: center;
+      left: 0;
+      position: absolute;
+      top: 20%;
+      width: 100%;
+
+      @media only screen and (orientation: landscape) {
+        top: 10%;
+      }
+
+      & > .hero__logo {
+        filter: drop-shadow(3px 3px 2px $color-button-shadow);
+        height: 10em;
+        width: 10em;
+      }
+    }
   }
 
   &.layer__2 {
@@ -171,7 +193,10 @@
     position: absolute;
     top: 15%;
     width: 100%;
-    // display: none;
+
+    @media only screen and (orientation: landscape) {
+      top: 0;
+    }
 
     &.desktop {
       top: 12%;

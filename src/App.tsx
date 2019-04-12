@@ -75,18 +75,6 @@ function App() {
       )
     : false;
 
-  // const adjustOffset = (height: number) => {
-  //   console.log(
-  //     `[App:adjustOffset]`,
-  //     height,
-  //     state.offsetY,
-  //     pageRef ? pageRef.clientHeight : null
-  //   );
-  //   if (pageRef) {
-  //     adjustOffset(pageRef.clientHeight);
-  //   }
-  // };
-
   const adjustOffset = () => {
     console.log(`[App:adjustOffset]`, pageRef, layer3Ref);
     if (pageRef && layer3Ref) {
@@ -157,18 +145,17 @@ function App() {
         });
         scrollBtnAnimation.play(0);
       }
-    } // else {
-    // const dbAdjustOffset = debounce(() => {
-    //   if (pageRef) {
-    //     const { height } = pageRef.getBoundingClientRect();
-    //     adjustOffset(height);
-    //   }
-    // }, 250);
-    // window.addEventListener("resize", dbAdjustOffset);
-    // return () => {
-    //   window.removeEventListener("resize", dbAdjustOffset);
-    // };
-    // }
+    } else {
+      const forceAdjustOffset = debounce(() => {
+        console.log(`[App:forceAdjustOffset] resize`);
+        dispatch({ type: "SET_NEXT_HEADER" });
+      }, 200);
+      window.addEventListener("resize", forceAdjustOffset);
+
+      return () => {
+        window.removeEventListener("resize", forceAdjustOffset);
+      };
+    }
   }, []);
 
   const handleScrollClick = () => {
@@ -201,7 +188,6 @@ function App() {
     <div ref={setRef} className="page">
       <div className="page__content">
         <BrowserRouter>
-          {/* <Page> */}
           <>
             <div className="app__title">
               <span className="app__title--highlight">NEAL</span>
@@ -243,7 +229,6 @@ function App() {
               }}
             </Route>
           </>
-          {/* </Page> */}
         </BrowserRouter>
       </div>
     </div>
@@ -252,12 +237,6 @@ function App() {
   const mobileContainer = (
     <>
       <div className="container">
-        <div className="layer layer__header">
-          <img src={logo} alt="logo" className="hero__logo" />
-          <div ref={div => (headerRef = div)}>
-            {headers[state.currentHeader]}
-          </div>
-        </div>
         <div ref={div => (layer3Ref = div)} className="layer layer__3">
           <div className="cloud">
             <img
@@ -272,6 +251,12 @@ function App() {
           </div>
           <div className="hero layer__2">
             <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
+          </div>
+          <div className="header__mobile">
+            <img src={logo} alt="logo" className="hero__logo" />
+            <div ref={div => (headerRef = div)} className="">
+              {headers[state.currentHeader]}
+            </div>
           </div>
         </div>
         <div className="layer layer__1">
