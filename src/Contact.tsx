@@ -104,8 +104,8 @@ function Contact({ modal = false }: ContactProps) {
 
   const contactContent = modal ? (
     <div>
-      Contact form coming soon! For now, if you'd like to get in touch, please
-      connect with me on&nbsp;
+      Contact form coming soon! In the meantime, if you'd like to get in touch,
+      please connect with me on&nbsp;
       <a
         href="https://www.linkedin.com/in/neal-higa-senior-software-engineer/"
         target="_blank"
