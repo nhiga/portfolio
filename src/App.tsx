@@ -148,7 +148,7 @@ function App() {
     } else {
       const forceAdjustOffset = debounce(() => {
         console.log(`[App:forceAdjustOffset] resize`);
-        dispatch({ type: "SET_NEXT_HEADER" });
+        dispatch({ type: "SET_OFFSET_Y", value: state.offsetY + 1 });
       }, 200);
       window.addEventListener("resize", forceAdjustOffset);
 
