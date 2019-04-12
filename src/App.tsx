@@ -286,7 +286,7 @@ function App() {
           ref={img => (cloudRef = img)}
           src={cloud}
           alt="cloud"
-          className="cloud-l"
+          className="cloud-l desktop"
         />
         <div className="hero">
           <img
