@@ -76,7 +76,6 @@ function App() {
     : false;
 
   const adjustOffset = () => {
-    console.log(`[App:adjustOffset]`, pageRef, layer3Ref);
     if (pageRef && layer3Ref) {
       const dy = -1 * pageRef.clientHeight;
       layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
@@ -147,7 +146,6 @@ function App() {
       }
     } else {
       const forceAdjustOffset = debounce(() => {
-        console.log(`[App:forceAdjustOffset] resize`);
         dispatch({ type: "SET_OFFSET_Y", value: state.offsetY + 1 });
       }, 200);
       window.addEventListener("resize", forceAdjustOffset);

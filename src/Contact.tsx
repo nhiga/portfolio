@@ -199,7 +199,10 @@ function Contact({ modal = false }: ContactProps) {
               }}
               addEndListener={(node, done) => {
                 if (state.contactOpen) {
-                  TweenMax.set(modalOverlayRef as {}, { display: "flex" });
+                  TweenMax.to(modalOverlayRef as {}, 0.2, {
+                    autoAlpha: 1,
+                    display: "flex"
+                  });
                 }
 
                 const vars = {
@@ -216,9 +219,8 @@ function Contact({ modal = false }: ContactProps) {
                 TweenMax.to(node, 0.2, vars);
 
                 if (!state.contactOpen) {
-                  TweenMax.set(modalOverlayRef as {}, {
-                    delay: 0.2,
-                    display: "none"
+                  TweenMax.to(modalOverlayRef as {}, 0.2, {
+                    autoAlpha: 0
                   });
                 }
               }}
