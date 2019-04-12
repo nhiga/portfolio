@@ -102,7 +102,26 @@ function Contact({ modal = false }: ContactProps) {
     TweenLite.to(modalOverlayRef, 0.1, { display: "none" });
   };
 
-  const contactContent = (
+  const contactContent = modal ? (
+    <div>
+      Contact form coming soon! For now, if you'd like to get in touch, please
+      connect with me on&nbsp;
+      <a
+        href="https://www.linkedin.com/in/neal-higa-senior-software-engineer/"
+        target="_blank"
+      >
+        <span className="link--bold">LinkedIn.</span>
+      </a>
+      &nbsp;&nbsp;
+      <a
+        className="linkedin"
+        href="https://www.linkedin.com/in/neal-higa-senior-software-engineer/"
+        target="_blank"
+      >
+        <FontAwesomeIcon icon={["fab", "linkedin"]} />
+      </a>
+    </div>
+  ) : (
     <div>
       If you'd like to get in touch, please
       <br />
