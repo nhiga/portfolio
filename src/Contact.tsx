@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TimelineLite, TweenLite } from "gsap";
+import { TimelineLite, TweenLite, TweenMax, Back, Linear } from "gsap";
 import React, { useReducer } from "react";
 // import Media from "react-media";
 import "./Contact.scss";
+import { Transition } from "react-transition-group";
 
 interface ContactProps {
   modal: boolean;
@@ -94,12 +95,15 @@ function Contact({ modal = false }: ContactProps) {
   };
 
   const handleContactOpenMobile = () => {
-    TweenLite.set(closeRefMobile, { display: "block" });
-    TweenLite.set(modalOverlayRef, { display: "flex" });
+    // const tl = new TimelineLite();
+    // tl.set(closeRefMobile as {}, { display: "block" });
+    // tl.set(modalOverlayRef as {}, { display: "flex" });
+    dispatch({ type: "OPEN_CONTACT" });
   };
 
   const handleContactCloseMobile = () => {
-    TweenLite.to(modalOverlayRef, 0.1, { display: "none" });
+    // TweenLite.to(modalOverlayRef, 0.1, { display: "none" });
+    dispatch({ type: "CLOSE_CONTACT" });
   };
 
   const contactContent = modal ? (
@@ -182,16 +186,54 @@ function Contact({ modal = false }: ContactProps) {
             ref={div => (modalOverlayRef = div)}
             className="contact__overlay"
           >
-            <div className="contact__modal">
-              {contactContent}
-              <button
-                ref={div => (closeRefMobile = div)}
-                className="contact__button-close"
-                onClick={handleContactCloseMobile}
-              >
-                close
-              </button>
-            </div>
+            <Transition
+              unmountOnExit
+              in={state.contactOpen}
+              timeout={1000}
+              onEnter={(node, isAppearing) => {
+                TweenMax.set(node, {
+                  autoAlpha: 0,
+                  display: "none",
+                  scale: 0.9
+                });
+              }}
+              addEndListener={(node, done) => {
+                if (state.contactOpen) {
+                  TweenMax.set(modalOverlayRef as {}, { display: "flex" });
+                }
+
+                const vars = {
+                  autoAlpha: state.contactOpen ? 1 : 0,
+                  delay: state.contactOpen ? 0.2 : 0,
+                  display: state.contactOpen ? "flex" : "none",
+                  ease: state.contactOpen
+                    ? Back.easeOut.config(1.7)
+                    : Linear.easeOut,
+                  scale: 1,
+                  onComplete: done
+                };
+
+                TweenMax.to(node, 0.2, vars);
+
+                if (!state.contactOpen) {
+                  TweenMax.set(modalOverlayRef as {}, {
+                    delay: 0.2,
+                    display: "none"
+                  });
+                }
+              }}
+            >
+              <div className="contact__modal">
+                {contactContent}
+                <button
+                  ref={div => (closeRefMobile = div)}
+                  className="contact__button-close"
+                  onClick={handleContactCloseMobile}
+                >
+                  close
+                </button>
+              </div>
+            </Transition>
           </div>
         </>
       )}
