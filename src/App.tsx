@@ -280,12 +280,14 @@ function App() {
         <div ref={div => (headerRef = div)}>{headers[state.currentHeader]}</div>
       </div>
       <div className="layer desktop layer__3">
-        <img
-          ref={img => (cloudRef = img)}
-          src={cloud}
-          alt="cloud"
-          className="cloud-l desktop"
-        />
+        <div className="cloud">
+          <img
+            ref={img => (cloudRef = img)}
+            src={cloud}
+            alt="cloud"
+            className="cloud-l desktop"
+          />
+        </div>
         <div className="hero">
           <img
             src={heroLayer3Desktop}
