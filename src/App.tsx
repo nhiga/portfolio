@@ -76,10 +76,10 @@ function App() {
     : false;
 
   const adjustOffset = (scroll: boolean = false) => {
-    if (scroll) {
-      handleScroll();
-    }
     if (pageRef && layer3Ref) {
+      if (scroll) {
+        pageRef.scrollIntoView({ behavior: "smooth" });
+      }
       const dy = -1 * pageRef.clientHeight;
       TweenMax.set(layer3Ref, {
         scale: 2,
