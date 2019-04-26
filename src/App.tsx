@@ -75,10 +75,17 @@ function App() {
       )
     : false;
 
-  const adjustOffset = () => {
+  const adjustOffset = (scroll: boolean = false) => {
+    if (scroll) {
+      handleScroll();
+    }
     if (pageRef && layer3Ref) {
       const dy = -1 * pageRef.clientHeight;
-      layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
+      TweenMax.set(layer3Ref, {
+        scale: 2,
+        y: dy,
+        z: -1
+      });
     }
   };
 
@@ -156,17 +163,18 @@ function App() {
     }
   }, []);
 
-  const handleScrollClick = () => {
+  const handleScroll = () => {
     if (isMobile) {
       TweenLite.to(window, 2, {
+        scrollTo: { y: ".page" },
+        ease: Expo.easeOut
+      });
+    } else {
+      TweenLite.to("#container", 2, {
         scrollTo: { y: ".page" },
         ease: Expo.easeInOut
       });
     }
-    TweenLite.to("#container", 2, {
-      scrollTo: { y: ".page" },
-      ease: Expo.easeInOut
-    });
   };
 
   const headers = [
@@ -178,7 +186,9 @@ function App() {
   const setRef = (element: HTMLDivElement) => {
     if (element) {
       pageRef = element;
-      adjustOffset();
+      if (isMobile) {
+        adjustOffset();
+      }
     }
   };
 
@@ -319,7 +329,7 @@ function App() {
             ref={btn => (btnScrollRef = btn)}
             type="button"
             className="button__scroll"
-            onClick={handleScrollClick}
+            onClick={handleScroll}
           >
             <FontAwesomeIcon
               icon="chevron-down"

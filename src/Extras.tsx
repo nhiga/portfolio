@@ -4,7 +4,7 @@ import { TweenMax, Back, Linear } from "gsap";
 
 interface ExtrasProps {
   show: boolean;
-  adjustOffset?: (offsetY: number) => void;
+  adjustOffset?: (scroll: boolean) => void;
 }
 
 const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
@@ -23,10 +23,8 @@ function Extras({ show, adjustOffset }: ExtrasProps) {
       timeout={1000}
       onEnter={(node, isAppearing) => {
         TweenMax.set(node, startState);
-      }}
-      onEntered={node => {
         if (show && adjustOffset && articleRef) {
-          adjustOffset(articleRef.clientHeight);
+          adjustOffset(true);
         }
       }}
       addEndListener={(node, done) => {
