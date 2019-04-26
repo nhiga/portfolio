@@ -22,10 +22,10 @@ function Extras({ show, adjustOffset }: ExtrasProps) {
       in={show}
       timeout={1000}
       onEnter={(node, isAppearing) => {
-        TweenMax.set(node, startState);
         if (show && adjustOffset && articleRef) {
           adjustOffset(true);
         }
+        TweenMax.set(node, startState);
       }}
       addEndListener={(node, done) => {
         const vars = {
