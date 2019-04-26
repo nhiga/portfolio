@@ -114,11 +114,11 @@ function App() {
         cloudRef as {},
         duration,
         {
-          left: -imgWidth
+          x: -imgWidth
         },
         {
           ease: Linear.easeNone,
-          left: fullVw,
+          x: fullVw,
           repeat: -1
         }
       );

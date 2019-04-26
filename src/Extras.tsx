@@ -11,7 +11,6 @@ const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
 
 function Extras({ show, adjustOffset }: ExtrasProps) {
   let articleRef: HTMLElement | null = null;
-  const info = navigator.userAgent;
 
   const setRef = (element: HTMLElement) => {
     articleRef = element;
@@ -57,7 +56,6 @@ function Extras({ show, adjustOffset }: ExtrasProps) {
               Code Sandbox: Playing with React hooks and a carousel component
               (coming soon)
             </li>
-            <li>{info}</li>
           </ul>
         </section>
         <section className="page__section">
