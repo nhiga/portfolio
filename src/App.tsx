@@ -75,11 +75,8 @@ function App() {
       )
     : false;
 
-  const adjustOffset = (scroll: boolean = false) => {
+  const adjustOffset = () => {
     if (pageRef && layer3Ref) {
-      if (scroll) {
-        pageRef.scrollIntoView({ behavior: "smooth" });
-      }
       const dy = -1 * pageRef.clientHeight;
       TweenMax.set(layer3Ref, {
         scale: 2,
@@ -165,10 +162,9 @@ function App() {
 
   const handleScroll = () => {
     if (isMobile) {
-      TweenLite.to(window, 2, {
-        scrollTo: { y: ".page" },
-        ease: Expo.easeOut
-      });
+      if (pageRef) {
+        pageRef.scrollIntoView({ behavior: "smooth" });
+      }
     } else {
       TweenLite.to("#container", 2, {
         scrollTo: { y: ".page" },
@@ -186,9 +182,6 @@ function App() {
   const setRef = (element: HTMLDivElement) => {
     if (element) {
       pageRef = element;
-      if (isMobile) {
-        adjustOffset();
-      }
     }
   };
 
@@ -208,6 +201,7 @@ function App() {
                 <About
                   show={match !== null}
                   adjustOffset={isMobile ? adjustOffset : undefined}
+                  scrollToPage={handleScroll}
                 />
               )}
             </Route>
@@ -216,6 +210,7 @@ function App() {
                 <Experience
                   show={match !== null}
                   adjustOffset={isMobile ? adjustOffset : undefined}
+                  scrollToPage={handleScroll}
                 />
               )}
             </Route>
@@ -224,6 +219,7 @@ function App() {
                 <Extras
                   show={match !== null}
                   adjustOffset={isMobile ? adjustOffset : undefined}
+                  scrollToPage={handleScroll}
                 />
               )}
             </Route>

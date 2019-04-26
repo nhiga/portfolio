@@ -4,12 +4,13 @@ import { TweenMax, Back, Linear } from "gsap";
 
 interface ExperienceProps {
   show: boolean;
-  adjustOffset?: (scroll: boolean) => void;
+  adjustOffset?: () => void;
+  scrollToPage?: () => void;
 }
 
 const startState = { autoAlpha: 0, display: "none", scale: 0.9 };
 
-function Experience({ show, adjustOffset }: ExperienceProps) {
+function Experience({ show, adjustOffset, scrollToPage }: ExperienceProps) {
   let articleRef: HTMLElement | null = null;
 
   const setRef = (element: HTMLElement) => {
@@ -22,12 +23,17 @@ function Experience({ show, adjustOffset }: ExperienceProps) {
       in={show}
       timeout={1000}
       onEnter={(node, isAppearing) => {
-        if (show && adjustOffset && articleRef) {
-          adjustOffset(true);
-        }
         TweenMax.set(node, startState);
       }}
+      onEntered={node => {
+        if (show && adjustOffset && articleRef) {
+          adjustOffset();
+        }
+      }}
       addEndListener={(node, done) => {
+        if (show && scrollToPage) {
+          scrollToPage();
+        }
         const vars = {
           autoAlpha: show ? 1 : 0,
           delay: show ? 0.2 : 0,
