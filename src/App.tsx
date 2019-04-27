@@ -41,8 +41,7 @@ type Action =
       type: "SET_NEXT_HEADER";
     }
   | {
-      type: "SET_OFFSET_Y";
-      value: number;
+      type: "INCREMENT_OFFSET_Y";
     };
 
 const initialState = {
@@ -54,8 +53,8 @@ function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case "SET_NEXT_HEADER":
       return { ...state, currentHeader: (state.currentHeader + 1) % 3 };
-    case "SET_OFFSET_Y":
-      return { ...state, offsetY: action.value };
+    case "INCREMENT_OFFSET_Y":
+      return { ...state, offsetY: state.offsetY + 1 };
     default:
       throw new Error(`Error occurred in App.reducer`);
   }
@@ -126,8 +125,13 @@ function App() {
           repeat: -1
         }
       );
+      return () => {
+        TweenMax.killTweensOf(cloudRef as {});
+      };
     }
+  }, [state.offsetY]);
 
+  useEffect(() => {
     if (!isMobile) {
       if (btnScrollRef) {
         const scrollBtnAnimation = new TimelineMax({ paused: true });
@@ -150,8 +154,7 @@ function App() {
       }
     } else {
       const forceAdjustOffset = debounce(() => {
-        console.log(`[App] resize`);
-        dispatch({ type: "SET_OFFSET_Y", value: state.offsetY + 1 });
+        dispatch({ type: "INCREMENT_OFFSET_Y" });
       }, 200);
       window.addEventListener("resize", forceAdjustOffset);
 
