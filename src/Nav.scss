@@ -17,27 +17,27 @@
 
     & > a {
       color: $color-primary;
-      transition: color 0.2s ease-in-out;
+      transition: color 0.2s ease-out;
 
       &:after {
         border-bottom: solid 3px $color-primary;
         content: "";
         display: block;
         transform: scaleX(0);
-        transition: transform 0.2s ease-in-out;
-        will-change: transform;
+        transition: transform 0.2s ease-out;
+        // will-change: transform;
       }
     }
 
     & > a.active {
       color: $color-highlight;
-      transition: color 0.2s ease-in-out 0.2s;
+      transition: color 0.2s ease-out 0.2s;
 
       &:after {
         border-bottom: solid 3px $color-highlight;
         transform: scaleX(1);
-        transition: transform 0.2s ease-in-out 0.2s;
-        will-change: transform;
+        transition: transform 0.2s ease-out 0.2s;
+        // will-change: transform;
       }
     }
   }
