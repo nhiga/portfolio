@@ -150,6 +150,7 @@ function App() {
       }
     } else {
       const forceAdjustOffset = debounce(() => {
+        console.log(`[App] resize`);
         dispatch({ type: "SET_OFFSET_Y", value: state.offsetY + 1 });
       }, 200);
       window.addEventListener("resize", forceAdjustOffset);
@@ -164,11 +165,6 @@ function App() {
     if (isMobile) {
       if (pageRef) {
         pageRef.scrollIntoView({ behavior: "smooth" });
-        // const offsetY = pageRef.offsetTop;
-        // TweenLite.to(window, 2, {
-        //   scrollTo: { y: offsetY },
-        //   ease: Expo.easeOut
-        // });
       }
     } else {
       TweenLite.to("#container", 2, {
@@ -187,6 +183,7 @@ function App() {
   const setRef = (element: HTMLDivElement) => {
     if (element) {
       pageRef = element;
+      adjustOffset();
     }
   };
 
