@@ -163,12 +163,12 @@ function App() {
   const handleScroll = () => {
     if (isMobile) {
       if (pageRef) {
-        // pageRef.scrollIntoView({ behavior: "smooth" });
-        const offsetY = pageRef.offsetTop;
-        TweenLite.to(window, 2, {
-          scrollTo: { y: offsetY },
-          ease: Expo.easeOut
-        });
+        pageRef.scrollIntoView({ behavior: "smooth" });
+        // const offsetY = pageRef.offsetTop;
+        // TweenLite.to(window, 2, {
+        //   scrollTo: { y: offsetY },
+        //   ease: Expo.easeOut
+        // });
       }
     } else {
       TweenLite.to("#container", 2, {
