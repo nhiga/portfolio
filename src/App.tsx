@@ -33,7 +33,7 @@ library.add(fab, faChevronDown, faCommentAlt, faMobile, faTimesCircle);
 
 interface AppState {
   currentHeader: number;
-  offsetY: number;
+  clientWidth: number;
 }
 
 type Action =
@@ -41,20 +41,21 @@ type Action =
       type: "SET_NEXT_HEADER";
     }
   | {
-      type: "INCREMENT_OFFSET_Y";
+      type: "SET_CLIENT_WIDTH";
+      value: number;
     };
 
 const initialState = {
   currentHeader: 0,
-  offsetY: 0
+  clientWidth: 0
 };
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case "SET_NEXT_HEADER":
       return { ...state, currentHeader: (state.currentHeader + 1) % 3 };
-    case "INCREMENT_OFFSET_Y":
-      return { ...state, offsetY: state.offsetY + 1 };
+    case "SET_CLIENT_WIDTH":
+      return { ...state, clientWidth: action.value };
     default:
       throw new Error(`Error occurred in App.reducer`);
   }
@@ -129,7 +130,7 @@ function App() {
         TweenMax.killTweensOf(cloudRef as {});
       };
     }
-  }, [state.offsetY]);
+  }, [state.clientWidth]);
 
   useEffect(() => {
     if (!isMobile) {
@@ -152,16 +153,18 @@ function App() {
         });
         scrollBtnAnimation.play(0);
       }
-    } else {
-      const forceAdjustOffset = debounce(() => {
-        dispatch({ type: "INCREMENT_OFFSET_Y" });
-      }, 200);
-      window.addEventListener("resize", forceAdjustOffset);
-
-      return () => {
-        window.removeEventListener("resize", forceAdjustOffset);
-      };
     }
+    const getClientWidth = () => state.clientWidth;
+    const forceAdjustOffset = debounce(() => {
+      if (window.innerWidth != getClientWidth()) {
+        dispatch({ type: "SET_CLIENT_WIDTH", value: window.innerWidth });
+      }
+    }, 200);
+    window.addEventListener("resize", forceAdjustOffset);
+
+    return () => {
+      window.removeEventListener("resize", forceAdjustOffset);
+    };
   }, []);
 
   const handleScroll = () => {
