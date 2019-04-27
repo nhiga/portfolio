@@ -163,7 +163,12 @@ function App() {
   const handleScroll = () => {
     if (isMobile) {
       if (pageRef) {
-        pageRef.scrollIntoView({ behavior: "smooth" });
+        // pageRef.scrollIntoView({ behavior: "smooth" });
+        const offsetY = pageRef.offsetTop;
+        TweenLite.to(window, 2, {
+          scrollTo: { y: offsetY },
+          ease: Expo.easeOut
+        });
       }
     } else {
       TweenLite.to("#container", 2, {
@@ -195,13 +200,12 @@ function App() {
               <img src={logo} alt="logo" className="app__title-logo" />
               <span className="app__title--primary">HIGA</span>
             </div>
-            <Nav />
+            <Nav onClick={handleScroll} />
             <Route path="/about" exact>
               {({ match }) => (
                 <About
                   show={match !== null}
                   adjustOffset={isMobile ? adjustOffset : undefined}
-                  scrollToPage={handleScroll}
                 />
               )}
             </Route>
@@ -210,7 +214,6 @@ function App() {
                 <Experience
                   show={match !== null}
                   adjustOffset={isMobile ? adjustOffset : undefined}
-                  scrollToPage={handleScroll}
                 />
               )}
             </Route>
@@ -219,7 +222,6 @@ function App() {
                 <Extras
                   show={match !== null}
                   adjustOffset={isMobile ? adjustOffset : undefined}
-                  scrollToPage={handleScroll}
                 />
               )}
             </Route>
