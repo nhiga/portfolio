@@ -24,7 +24,7 @@
         content: "";
         display: block;
         transform: scaleX(0);
-        transition: transform 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
       }
     }
 
@@ -35,7 +35,7 @@
       &:after {
         border-bottom: solid 3px $color-highlight;
         transform: scaleX(1);
-        transition: transform 0.2s ease-in-out 0.2s;
+        transition: all 0.2s ease-in-out 0.2s;
       }
     }
   }
