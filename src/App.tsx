@@ -47,7 +47,7 @@ type Action =
 
 const initialState = {
   currentHeader: 0,
-  clientWidth: 0
+  clientWidth: window.innerWidth
 };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -78,11 +78,12 @@ function App() {
   const adjustOffset = () => {
     if (pageRef && layer3Ref) {
       const dy = -1 * pageRef.clientHeight;
-      TweenMax.set(layer3Ref, {
-        scale: 2,
-        y: dy,
-        z: -1
-      });
+      layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
+      // TweenMax.set(layer3Ref, {
+      //   scale: 2,
+      //   y: dy,
+      //   z: -1
+      // });
     }
   };
 
@@ -107,7 +108,7 @@ function App() {
       clearTimeout(timeoutId);
       clearTimeout(timeoutId2);
     };
-  }, [headerRef, state.currentHeader]);
+  }, [state.currentHeader]);
 
   useEffect(() => {
     if (cloudRef) {
@@ -169,13 +170,17 @@ function App() {
 
   const handleScroll = () => {
     if (isMobile) {
-      if (pageRef) {
-        pageRef.scrollIntoView({ behavior: "smooth" });
-      }
+      // if (pageRef) {
+      //   pageRef.scrollIntoView({ behavior: "smooth" });
+      // }
+      TweenLite.to(window, 2, {
+        scrollTo: { y: ".page" },
+        ease: Expo.easeOut
+      });
     } else {
       TweenLite.to("#container", 2, {
-        scrollTo: { y: ".page" },
-        ease: Expo.easeInOut
+        scrollTo: { y: ".page" }
+        // ease: Expo.easeInOut
       });
     }
   };
