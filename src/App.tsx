@@ -173,7 +173,7 @@ function App() {
       // if (pageRef) {
       //   pageRef.scrollIntoView({ behavior: "smooth" });
       // }
-      TweenLite.to(window, 0.5, {
+      TweenLite.to(window, 0.2, {
         scrollTo: { y: ".page" },
         ease: Expo.easeOut
       });
