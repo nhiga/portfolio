@@ -170,13 +170,13 @@ function App() {
 
   const handleScroll = () => {
     if (isMobile) {
-      // if (pageRef) {
-      //   pageRef.scrollIntoView({ behavior: "smooth" });
-      // }
-      TweenLite.to(window, 0.2, {
-        scrollTo: { y: ".page" },
-        ease: Expo.easeOut
-      });
+      if (pageRef) {
+        pageRef.scrollIntoView({ behavior: "smooth" });
+      }
+      // TweenLite.to(window, 0.2, {
+      //   scrollTo: { y: ".page" },
+      //   ease: Expo.easeOut
+      // });
     } else {
       TweenLite.to("#container", 2, {
         scrollTo: { y: ".page" }
