@@ -32,7 +32,7 @@ function Experience({ show, adjustOffset }: ExperienceProps) {
       addEndListener={(node, done) => {
         const vars = {
           autoAlpha: show ? 1 : 0,
-          delay: show ? 0.4 : 0.2,
+          delay: show ? 0.2 : 0,
           display: show ? "block" : "none",
           ease: show ? Back.easeOut.config(1.7) : Linear.easeOut,
           scale: 1,
