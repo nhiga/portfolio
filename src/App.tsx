@@ -103,7 +103,7 @@ function App() {
       if (headerRef) {
         TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
       }
-    }, 3750);
+    }, 3500);
 
     return () => {
       clearTimeout(timeoutId);
