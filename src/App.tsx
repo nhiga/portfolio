@@ -73,10 +73,13 @@ function App() {
       )
     : false;
 
+  const getClientWidth = () => {
+    return state.clientWidth;
+  };
+
   const adjustOffset = () => {
     if (pageRef && layer3Ref) {
       const dy = -1 * pageRef.clientHeight;
-      // layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
       TweenMax.set(layer3Ref, {
         scale: 2,
         y: dy,
@@ -154,11 +157,8 @@ function App() {
         scrollBtnAnimation.play(0);
       }
     }
-    const getClientWidth = () => state.clientWidth;
     const forceAdjustOffset = debounce(() => {
-      if (window.innerWidth != getClientWidth()) {
-        dispatch({ type: "SET_CLIENT_WIDTH", value: window.innerWidth });
-      }
+      dispatch({ type: "SET_CLIENT_WIDTH", value: window.innerWidth });
     }, 200);
     window.addEventListener("resize", forceAdjustOffset);
 
