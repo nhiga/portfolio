@@ -104,28 +104,8 @@ function App() {
         opacity: 0,
         onComplete: () => dispatch({ type: "SET_NEXT_HEADER" })
       },
-      "+=2.5"
+      "+=3"
     );
-    // TweenLite.fromTo(
-    //   headerRef,
-    //   1,
-    //   { opacity: 0, scale: 0.8 },
-    //   { color: "#ffad33", opacity: 1, scale: 1 }
-    // );
-    // const timeoutId = setTimeout(() => {
-    //   dispatch({ type: "SET_NEXT_HEADER" });
-    // }, 5000);
-
-    // const timeoutId2 = setTimeout(() => {
-    //   if (headerRef) {
-    //     TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
-    //   }
-    // }, 3500);
-
-    // return () => {
-    //   clearTimeout(timeoutId);
-    //   clearTimeout(timeoutId2);
-    // };
   }, [state.currentHeader]);
 
   useEffect(() => {
@@ -204,15 +184,8 @@ function App() {
     <h1 className="layer__header-title">experience</h1>
   ];
 
-  const setRef = (element: HTMLDivElement) => {
-    if (element) {
-      pageRef = element;
-      // adjustOffset();
-    }
-  };
-
   const pageContainer = (
-    <div ref={setRef} className="page">
+    <div ref={div => (pageRef = div)} className="page">
       <div className="page__content">
         <BrowserRouter>
           <>
