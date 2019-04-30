@@ -89,26 +89,43 @@ function App() {
   };
 
   useEffect(() => {
-    TweenLite.fromTo(
-      headerRef,
+    const tl = new TimelineMax();
+    tl.fromTo(
+      headerRef as {},
       1,
       { opacity: 0, scale: 0.8 },
       { color: "#ffad33", opacity: 1, scale: 1 }
     );
-    const timeoutId = setTimeout(() => {
-      dispatch({ type: "SET_NEXT_HEADER" });
-    }, 5000);
+    tl.to(
+      headerRef as {},
+      1,
+      {
+        color: "#ffffff",
+        opacity: 0,
+        onComplete: () => dispatch({ type: "SET_NEXT_HEADER" })
+      },
+      "+=2.5"
+    );
+    // TweenLite.fromTo(
+    //   headerRef,
+    //   1,
+    //   { opacity: 0, scale: 0.8 },
+    //   { color: "#ffad33", opacity: 1, scale: 1 }
+    // );
+    // const timeoutId = setTimeout(() => {
+    //   dispatch({ type: "SET_NEXT_HEADER" });
+    // }, 5000);
 
-    const timeoutId2 = setTimeout(() => {
-      if (headerRef) {
-        TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
-      }
-    }, 3500);
+    // const timeoutId2 = setTimeout(() => {
+    //   if (headerRef) {
+    //     TweenLite.to(headerRef, 1, { color: "#ffffff", opacity: 0 });
+    //   }
+    // }, 3500);
 
-    return () => {
-      clearTimeout(timeoutId);
-      clearTimeout(timeoutId2);
-    };
+    // return () => {
+    //   clearTimeout(timeoutId);
+    //   clearTimeout(timeoutId2);
+    // };
   }, [state.currentHeader]);
 
   useEffect(() => {
