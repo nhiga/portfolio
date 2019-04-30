@@ -109,6 +109,7 @@ function App() {
   }, [state.currentHeader]);
 
   useEffect(() => {
+    adjustOffset();
     if (cloudRef) {
       const fullVw = window.innerWidth;
       const imgWidth = cloudRef.clientWidth;
@@ -189,7 +190,7 @@ function App() {
   const setRef = (element: HTMLDivElement) => {
     if (element) {
       pageRef = element;
-      adjustOffset();
+      // adjustOffset();
     }
   };
 
