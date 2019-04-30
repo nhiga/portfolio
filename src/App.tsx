@@ -16,10 +16,8 @@ import Contact from "./Contact";
 import Experience from "./Experience";
 import Extras from "./Extras";
 import Nav from "./Nav";
-// import Page from "./Page";
 
 import cloud from "./cloud.png";
-// import heroLayer1 from "./hero-layer-1.png";
 import heroLayer1Desktop from "./hero-layer-1-desktop.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
@@ -78,12 +76,12 @@ function App() {
   const adjustOffset = () => {
     if (pageRef && layer3Ref) {
       const dy = -1 * pageRef.clientHeight;
-      layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
-      // TweenMax.set(layer3Ref, {
-      //   scale: 2,
-      //   y: dy,
-      //   z: -1
-      // });
+      // layer3Ref.style.transform = `translateY(${dy}px) translateZ(-1px) scale(2)`;
+      TweenMax.set(layer3Ref, {
+        scale: 2,
+        y: dy,
+        z: -1
+      });
     }
   };
 
@@ -170,17 +168,14 @@ function App() {
 
   const handleScroll = () => {
     if (isMobile) {
-      // if (pageRef) {
-      //   pageRef.scrollIntoView({ behavior: "smooth" });
-      // }
-      TweenLite.to(window, 0.2, {
+      TweenLite.to(window, 0.5, {
         scrollTo: { autoKill: false, y: ".page" },
-        ease: Expo.easeOut
+        ease: Expo.easeInOut
       });
     } else {
-      TweenLite.to("#container", 2, {
+      TweenLite.to("#container", 1, {
         scrollTo: { y: ".page" },
-        ease: Expo.easeOut
+        ease: Expo.easeInOut
       });
     }
   };
