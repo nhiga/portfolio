@@ -58,7 +58,7 @@ function Experience({ show, adjustOffset }: ExperienceProps) {
           </h4>
           <h5>San Francisco</h5>
           <ul>
-            <li>Full-stack JavaScript engineer</li>
+            <li>Front end leaning JavaScript engineer</li>
             <li>
               Designed and developed a platform for creating a library of
               reusable React components that can be integrated into non-React

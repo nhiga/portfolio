@@ -7,22 +7,23 @@ import {
   faTimesCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TweenLite, Expo, Ease, TimelineMax, Linear, TweenMax } from "gsap";
+import { TweenLite, Expo, TimelineMax, TweenMax } from "gsap";
 import debounce from "lodash/debounce";
 import React, { useEffect, useReducer } from "react";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import About from "./About";
+import Cloud from "./Cloud";
 import Contact from "./Contact";
 import Experience from "./Experience";
 import Extras from "./Extras";
 import Nav from "./Nav";
+import Title from "./Title";
 
-import cloud from "./cloud.png";
+import logo from "./nh-logo.svg";
 import heroLayer1Desktop from "./hero-layer-1-desktop.png";
 import heroLayer2 from "./hero-layer-2.png";
 import heroLayer3 from "./hero-layer-3.jpg";
 import heroLayer3Desktop from "./hero-layer-3-desktop.jpg";
-import logo from "./nh-logo.svg";
 
 import "./App.scss";
 import "./Page.scss";
@@ -61,75 +62,18 @@ function reducer(state: AppState, action: Action): AppState {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  let cloudRef: HTMLImageElement | null = null;
-  let headerRef: HTMLDivElement | null = null;
   let btnScrollRef: HTMLButtonElement | null = null;
+  let containerRef: HTMLDivElement | null = null;
   let layer3Ref: HTMLDivElement | null = null;
   let pageRef: HTMLDivElement | null = null;
-
   const isMobile: boolean = navigator
     ? !!navigator.userAgent.match(
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i
       )
     : false;
 
-  const getClientWidth = () => {
-    return state.clientWidth;
-  };
-
-  const adjustOffset = () => {
-    if (pageRef && layer3Ref) {
-      const dy = -1 * pageRef.clientHeight;
-      TweenMax.set(layer3Ref, {
-        scale: 2,
-        y: dy,
-        z: -1
-      });
-    }
-  };
-
-  useEffect(() => {
-    const tl = new TimelineMax();
-    tl.fromTo(
-      headerRef as {},
-      1,
-      { opacity: 0, scale: 0.8 },
-      { color: "#ffad33", opacity: 1, scale: 1 }
-    );
-    tl.to(
-      headerRef as {},
-      1,
-      {
-        color: "#ffffff",
-        opacity: 0,
-        onComplete: () => dispatch({ type: "SET_NEXT_HEADER" })
-      },
-      "+=3"
-    );
-  }, [state.currentHeader]);
-
   useEffect(() => {
     adjustOffset();
-    if (cloudRef) {
-      const fullVw = window.innerWidth;
-      const imgWidth = cloudRef.clientWidth;
-      const duration = isMobile ? 60 : 120;
-      TweenMax.fromTo(
-        cloudRef as {},
-        duration,
-        {
-          x: -imgWidth
-        },
-        {
-          ease: Linear.easeNone,
-          x: fullVw,
-          repeat: -1
-        }
-      );
-      return () => {
-        TweenMax.killTweensOf(cloudRef as {});
-      };
-    }
   }, [state.clientWidth]);
 
   useEffect(() => {
@@ -164,6 +108,17 @@ function App() {
     };
   }, []);
 
+  function adjustOffset() {
+    if (pageRef && layer3Ref) {
+      const dy = -1 * pageRef.clientHeight;
+      TweenMax.set(layer3Ref, {
+        scale: 2,
+        y: dy,
+        z: -1
+      });
+    }
+  }
+
   const handleScroll = () => {
     if (isMobile) {
       TweenLite.to(window, 0.5, {
@@ -171,18 +126,12 @@ function App() {
         ease: Expo.easeInOut
       });
     } else {
-      TweenLite.to("#container", 1, {
-        scrollTo: { y: ".page" },
+      TweenLite.to(containerRef, 1, {
+        scrollTo: { autoKill: false, y: ".page" },
         ease: Expo.easeInOut
       });
     }
   };
-
-  const headers = [
-    <h1 className="layer__header-title">quality</h1>,
-    <h1 className="layer__header-title">passion</h1>,
-    <h1 className="layer__header-title">experience</h1>
-  ];
 
   const pageContainer = (
     <div ref={div => (pageRef = div)} className="page">
@@ -238,26 +187,18 @@ function App() {
     <>
       <div className="container">
         <div ref={div => (layer3Ref = div)} className="layer layer__3">
-          <div className="cloud">
-            <img
-              ref={img => (cloudRef = img)}
-              src={cloud}
-              alt="cloud"
-              className="cloud-l"
-            />
-          </div>
+          <Cloud
+            className="cloud-l"
+            clientWidth={state.clientWidth}
+            duration={60}
+          />
           <div className="hero">
             <img src={heroLayer3} alt="Image layer 3" className="hero__image" />
           </div>
           <div className="hero layer__2">
             <img src={heroLayer2} alt="Image layer 2" className="hero__image" />
           </div>
-          <div className="header__mobile">
-            <img src={logo} alt="logo" className="hero__logo" />
-            <div ref={div => (headerRef = div)} className="">
-              {headers[state.currentHeader]}
-            </div>
-          </div>
+          <Title className="header__mobile" />
         </div>
         <div className="layer layer__1">
           <div className="hero">
@@ -276,20 +217,14 @@ function App() {
   );
 
   const desktopContainer = (
-    <div id="container" className="container desktop">
-      <div className="layer desktop layer__header">
-        <img src={logo} alt="logo" className="hero__logo" />
-        <div ref={div => (headerRef = div)}>{headers[state.currentHeader]}</div>
-      </div>
+    <div ref={div => (containerRef = div)} className="container desktop">
+      <Title className="layer desktop layer__header" />
       <div className="layer desktop layer__3">
-        <div className="cloud">
-          <img
-            ref={img => (cloudRef = img)}
-            src={cloud}
-            alt="cloud"
-            className="cloud-l desktop"
-          />
-        </div>
+        <Cloud
+          className="cloud-l desktop"
+          clientWidth={state.clientWidth}
+          duration={120}
+        />
         <div className="hero">
           <img
             src={heroLayer3Desktop}
