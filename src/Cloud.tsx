@@ -1,7 +1,7 @@
 import { Linear, TweenMax } from "gsap";
 import React, { useEffect } from "react";
 
-import cloud from "./cloud.png";
+import cloud from "./images/cloud.png";
 
 interface CloudProps {
   className: string;

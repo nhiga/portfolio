@@ -1,7 +1,7 @@
 import { TimelineMax } from "gsap";
 import React, { useEffect, useState } from "react";
 
-import logo from "./nh-logo.svg";
+import logo from "./images/nh-logo.svg";
 
 interface TitleProps {
   className: string;

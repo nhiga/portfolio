@@ -19,11 +19,11 @@ import Extras from "./Extras";
 import Nav from "./Nav";
 import Title from "./Title";
 
-import logo from "./nh-logo.svg";
-import heroLayer1Desktop from "./hero-layer-1-desktop.png";
-import heroLayer2 from "./hero-layer-2.png";
-import heroLayer3 from "./hero-layer-3.jpg";
-import heroLayer3Desktop from "./hero-layer-3-desktop.jpg";
+import logo from "./images/nh-logo.svg";
+import heroLayer1Desktop from "./images/hero-layer-1-desktop.png";
+import heroLayer2 from "./images/hero-layer-2.png";
+import heroLayer3 from "./images/hero-layer-3.jpg";
+import heroLayer3Desktop from "./images/hero-layer-3-desktop.jpg";
 
 import "./App.scss";
 import "./Page.scss";
